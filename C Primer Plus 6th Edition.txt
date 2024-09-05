@@ -1,0 +1,159 @@
+Chapter 1 Getting Ready
+
+1.History of C
+B language(Ken Thompson) -> C language(Dennis Ritchie of Bell Labs, 1972)
+
+2.Purpose
+To be a tool for working programmers, to be a useful language.
+
+3.Virtues
+[1]Powerful Control Structures
+
+[2]Fast
+
+[3]Compact Code -- Small Programs
+
+[4]Portable To Other Computers
+	Portability: C programs written on one system can be run on other systems with little or no modification. And most of the powerful, flexible Unix operating system was written in C.
+
+	* The portions of a program written specifically to access particular hardware devices, such as a display monitor, or special features of an operating system, such as Windows 8 or OS X, typically are not portable.
+
+4.Shortcomings
+[1]C's freedom of expression also requires added responsibility.
+
+[2]C's use of pointers means that you can make programming errors that are difficult to trace.
+
+[3]C's conciseness, combined with its wealth of operators, make it possible to prepare code that is extremely difficult to follow.
+
+5.Assembly Language
+	This is a mnemonic representation of the set of internal instructions used by a particular central processing unit design, and different CPU families have different assembly languages.
+
+6.Compiler
+	Programs that convert your code into the instructions a computer uses internally. Or you can say that it is a program that translates the high-level language program into the detailed set of machine language instructions the computer requires.
+
+7.C++
+	C++ == C + object-oriented programming tools. (C++ is like a superset of C.)
+
+8.Object-oriented Programming
+	Object-oriented Programming is a philosophy that attempts to mold the language to fit a problem instead of molding the problem to fit the language.
+
+9.Where C is used
+[1]UNIX Operating System
+
+[2]Computer Games
+
+[3]Embedded Systems
+
+[4]Robot Factories
+
+[5]Robot Factories
+
+[6]Star Wars
+
+[7]PC Applications
+
+[8]Computer Languages
+
+[9]LucasFilm
+
+10.Computer's Components
+[1]The Central Processing Unit (CPU)
+	Does most of the computing work.
+
+	(1)Fetches an instruction from memory and executes it, and then fetches the next one and repeat it.
+
+	* It consists of several registers, each of them holds the memory address of the next instruction and it uses this info to fetch the next instruction.
+
+	(2)After fetching an instruction, it stores info in another register and updates the 1st registerto the address of the next instruction.
+
+	* It has a limited repertoire of instructions (instruction set) that it understands.
+
+[2]Random Access Memory (RAM)
+	Serves as a workplace to hold programs and files.
+
+[3]Permanent Memory Storage Device (Typically a Hard Disk)
+	Remembers those programs and files, even while the computer is turned off.
+
+[4]Other Peripherals
+	Such as the keyboard, mouse, touchscreen, and monitor, provide for communication between the computer and you.
+
+11.Everything in computer is stored as numbers (machine language).
+
+12.High-level Computer Languages and Compilers
+[1]Simplify your programming life in these ways:
+	(1)We don't have to express our instructions in a numeric code.
+
+	(2)The instructions we use are much closer to how we might think about a problem than they are to the detailed approach a computer uses.
+
+	(3)With compilers, the high-level language programs we produce can be translated into machine languages.
+
+	* Generally, different computer design has different machine language, with the right compiler or sets of compilers, we can convert the same high-level language program to different machine language programs.
+
+13.Using C: Seven Steps
+[1]Define the program objectives.
+	Start with a clear idea of what you want the program to do. (What info does your program need/Calculations & manipulations/The info the program should report back to you.)
+
+[2]Design the program.
+	Decide how the program will go about the goal. (User interface/How to organize/Target user/Time/Ways of processing data and representing it.)
+
+[3]Write the code.
+	Implementation. (Sketch ideas on paper/Source Code File which contains the C rendition of your program design/Document your work by comment facility)
+
+[4]Compile.
+	Compiler converts source code (what you write in the compiler) into executable code (code in the native language, or machine language of your computer).
+
+	* ?What does a C compiler do?
+	1.It translates C into a particular machine language and incorporates code from C libraries into the final program. (compiler runs the linker which brings in the library routines.) As a result, an executable file containing code that the computer understands and that you can run will be generated.
+
+	2.It checks the your program is valid C. When it finds an error, it will not generate an executable file.
+
+[5]Run the program.
+	IDEs: integrated development environments.
+
+[6]Test and debug the program.
+	Debugging: The process of finding and fixing program errors.
+
+[7]Maintain and modify the program.
+
+[8]Commentary
+	Documenting your work helps you move back and forth between levels.
+
+	!!IMPORTANT: You should develop the habit of planning before coding.
+
+	* For larger projects, we might go back and forth, using what we learn at a later step to refine an earlier step.
+
+14.Programming Mechanics
+[1]Source Code File:
+	Requires the name of the file ends in ".c", the part before ".c" is called the basename, "c" is called the extension. (file name == the basename + the extension)
+
+15.Object Code Files, Executable Files, and Libraries
+[1]Modularization of programs
+	The compiler converts your source code to an intermediate code, and the linker combines this with other code to produce the executable file, also, the linker combines your program with precompiled library code.
+
+	* If you need to change one module, you can just change the one that needs to be changed.
+
+[2]Intermediate Files (many forms)
+	One of the forms of intermediate files is to convert the source code to machine language code, placing the result in an "object code file", or "object file" for short. (when your source code consists of a single file) 
+
+	* Even if the object file contains machine language code (the translation of your source code), it is not ready to run which means that your object file is not yet a complete program.
+
+	* ?What is missed in intermediate files?
+	<1>Startup Code
+	The code that acts as an interface between your program and the operating system.
+
+	<2>The Code for Library Routines
+	Nearly all C programs make use of functions (routines that are part of the standard C library).
+
+	For example, "concrete.c" uses the function "printf()", but this is not included in the object code file. The actual code is actually stored in another file called a "library" file which contains object code for many functions.
+
+	* Linker can bring together: object code (intermediate files), the standard startup code for your system & the library code --> to be a single file which is the executable file.
+
+	!!IMPORTANT:
+						The Object File 			The Executable File
+	--------------------------------------------------------------------
+	Machine Language 			Y 							Y
+	--------------------------------------------------------------------
+	Machine Code for 			N 							Y
+	Library Routines & 
+	Startup Code
+	---------------------------------------------------------------------
