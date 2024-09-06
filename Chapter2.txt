@@ -1,0 +1,81 @@
+Chapter2 Introducing C
+
+一、Operator
+1.An example
+Listing2.1 The "first.c" Program
+#include <studio.h>
+int main(void) 		/* a simple program 					*/
+{
+	int num; 		/* define a variable called num 		*/
+	num = 1; 		/* assign a value to num 				*/
+
+	printf("I am a simple "); /* use the printf() function 	*/
+	printf("computer.\n");
+	printf("My favorite number is %d because it is first.\n", num);
+
+	return 0;
+}
+
+2.The parts of a C program
+(1)#include: This is a preprocessor instruction.
+
+	Here we use "#include <stdio.h>" means that we want to include the info found in another file: studio.h, which is a standard part of all C compiler packages for supporting keyboard input and displaying output.
+
+(2)int main(void): main() is ALWAYS the FIRST function called.
+
+	Here we use "int main(void)", the "int" means the main function returns an integer, the "void" means the function takes no arguments.
+
+(3)/* and */: They enclose comments and help clarify the program, the compiler will ignore them.
+
+(4)"{": It makes the start of the statements that make up the function; "}" marks the end of the function.
+
+	* statements: The things in functions. There are 5 types: declaration, assignment, function, control and null. 
+
+(5)"int num;": It is a declaration statement which announces that you are using the value 1 to the variable called num.
+
+(6)"num = 1;": It is an assignment statement which announces that you are using a variable called num and that num will be an integer type.
+
+(7)'printf();': This is a function call statement and leaves the cursor on the same line.
+
+	Here the "\n" from "printf("computer.\n");" is the code telling the computer to start a new line which means move the cursor to the beginning of the next line.
+
+	Here the "%d" from "printf("My favorite number is %d because it is first.\n", num);" instructs the computer where and in what form to print the value of num.
+
+(8)'return 0;': This is a return statement. A C function can furnish/return a number to the agency that used it.
+
+3.Program Details
+(1)#include Directives and Header Files
+
+* ?What is preprocessing?
+C compilers perform some preparatory work on source code before compiling.
+
+* ?What is stdio.h?
+It stands for standard input/output header. (header == a collection of infomation used by the compiler to build the final executable program, and the collection goes at the top of a file.)
+
+!!IMPORTANT
+The actual code for a function is in a library file of precompiled code instead of a header file. That is to say, header files help guide the compiler in putting your program together correctly.
+
+(2)ANSI/ISO C
+It standardizes which header files a C compiler must make available.
+For example, some programs need to include stdio.h, and some do not.
+
+* ?How to determine which header file should we use?
+The documentation for a particular C implementation should include a description of the functions in the C library, and this description identifies which header file we should use.
+
+二、Functions
+
+
+三、Putting Together a simple C Program
+
+
+四、Creating Integer-valued Variables, Assigning Them Values, and Displaying Those Values Onscreen
+
+
+五、The Newline Character
+
+
+六、How To Include Comments In Your Programs, Create Programs Containing More Than One Function, and Find Program Errors
+
+
+七、What Keyboards Are
+
