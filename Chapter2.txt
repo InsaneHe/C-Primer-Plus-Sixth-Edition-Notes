@@ -46,24 +46,77 @@ int main(void) 		/* a simple program 					*/
 3.Program Details
 (1)#include Directives and Header Files
 
-* ?What is preprocessing?
-C compilers perform some preparatory work on source code before compiling.
-
-* ?What is stdio.h?
-It stands for standard input/output header. (header == a collection of infomation used by the compiler to build the final executable program, and the collection goes at the top of a file.)
-
-!!IMPORTANT
-The actual code for a function is in a library file of precompiled code instead of a header file. That is to say, header files help guide the compiler in putting your program together correctly.
+	* ?What is preprocessing?
+	C compilers perform some preparatory work on source code before compiling.
+	
+	* ?What is stdio.h?
+	It stands for standard input/output header. (header == a collection of infomation used by the compiler to build the final executable program, and the collection goes at the top of a file.)
+	
+	!!IMPORTANT
+	The actual code for a function is in a library file of precompiled code instead of a header file. That is to say, header files help guide the compiler in putting your program together correctly.
 
 (2)ANSI/ISO C
 It standardizes which header files a C compiler must make available.
 For example, some programs need to include stdio.h, and some do not.
 
-* ?How to determine which header file should we use?
-The documentation for a particular C implementation should include a description of the functions in the C library, and this description identifies which header file we should use.
+	* ?How to determine which header file should we use?
+	The documentation for a particular C implementation should include a description of the functions in the C library, and this description identifies which header file we should use.
+
+(3)Comments
+What are in "/*" & "*/" or what are after "//" are called "comments" which is used to make it easier for user to understand your program.
 
 二、Functions
+(1)Braces, Bodies and Blocks
+Braces delimits the function. The presence of braces is mandatory. (Only "{}" does)
 
+(2)Declarations
+For example, "int num;" is termed a declaration statement which basically declares 2 things: First thing is you have a variable called num; Second thing is the "int" proclaims num as an integer which is one of the data types. The compiler can use this information to arrange for suitable storage space in memory for the "num" variable.
+
+	* "int" here is a C keyword identifying one of the basic C data types.
+	
+	* Keywords are the words used to express a language, and you cannot use them for other purposes.
+	
+	* Identifier is a name you select for a variable, a function, or some other entity. (Such as "num".)
+	
+	!!In C, all variables must be declared before they are used. --> Provide lists of all the variables you use in a program and you have to show which data type each variable is. Normally, variables should be declared at the beginning of a block with no other kind of statement allowed to be come before any of the declarations.
+
+(3)Data Types
+Declaring a variable to be an integer or a character type makes it possible for the computer to store, fetch, and interpret the data properly.
+
+(4)Name Choice
+Use meaningful names (or identifiers) for variables. (If the name does not suffice, use comments to explain what the variables represent.)
+The characters at your disposal are lowercase letters, uppercase letters, digits, and the underscore("_"). (C names are case sensitive.)
+
+!!The first character must be a letter or an underscore.
+
+!!Operating systems and the C library often use identifiers with one or two initial underscore characters, such as _kcab, so it is better to avoid that usage yourself.
+
+(5)4 Good Reasons to Declare Variables
+	[1]Gathering all variables in one place can make it easier for readers to grasp what the program is about.
+	
+	[2]This action encourages you to plan before coding.
+	
+	[3]This action helps prevent a programming's more subtle and hard-to-find bugs: misspelled variable name.
+	
+	[4]Your C program will not compile if you do not declare your variables.
+
+(6)Assignment
+"num = 1;" is an assignment statement, the earlier "int num;" set aside space in computer memory for the variable num, and the assignment line stores a value in that location.
+
+(7)The printf() function
+	[1]the argument/the actual argument of a function: the material enclosed in the parentheses, it is also information passed from the main() function to the printf() function.
+	
+	[2]formal argument: a variable in the in the function used to hold the value.
+	
+	* Escape Sequence is used to represent difficult-or impossible-to-type characters.
+	
+	For example, \t means Tab; \b means Backspace.
+	
+	* Placeholder is used to show where the value of a certain variable is to be printed.
+	% alerts the program that a variable is to be printed at that location.
+
+(8)Return Statement
+You can regard it as something required for logical consistency.
 
 三、Putting Together a simple C Program
 
