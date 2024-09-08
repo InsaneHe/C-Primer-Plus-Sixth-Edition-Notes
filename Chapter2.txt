@@ -118,14 +118,61 @@ The characters at your disposal are lowercase letters, uppercase letters, digits
 (8)Return Statement
 You can regard it as something required for logical consistency.
 
-三、Putting Together a simple C Program
+三、Tips on Making Your Programs Readable
+1.Choose meaningful variable names.
 
+2.Use comments.
 
-四、Creating Integer-valued Variables, Assigning Them Values, and Displaying Those Values Onscreen
+3.Use blank lines to sepatate one conceputal section of a function from another.
 
+4.Use one line per statement.
 
-五、The Newline Character
+For example, we can firstly begin with a comment to identify the filename and the purpose of the program. Next, we can declare the multiple variables either by separating the variables (multiple declaration statements) or by a comma in the declaration statement.
 
+四、Another Example
+1.Listing2.3 The "two_func.c" Program
+#include <studio.h>
+
+void butler(void); 	/* ANSI/ISO C function prototyping */
+
+int main(void)
+{
+	printf("I will summon the butler function.\n");
+	butler();
+	printf("Yes. Bring me some tea and writeable DVDs.\n");
+
+	return0;
+}
+
+void butler(void) 	/* start of function definition */
+{
+	printf("You rang, sir?\n");
+}
+
+The 1st appearance of the butler() function is in the prototype which informs the compiler about the fucntions to be used.
+
+* Prototype declares to the compiler that you are using a particular function.
+
+The 2nd appearance of it is in main() function in the form of a function call.
+The final appearance of it presents the function definition which is the source code for the function itself.
+
+* It is the location of the butler() call in main() instead of the location of the butler() definition in the file that determines when the butler() function is executed.
+
+!!All C programs begin execution with main(), no matter where main() is located in the program files.
+
+五、Debugging
+1.Bugs == Program Errors; Debugging == Finding and Fixing the Errors.
+(1)Syntax Errors
+[1]Syntax errors use valid C symbols in the wrong places.
+
+?How to detect syntax errors?
+Firstly, look through the source code and see whether you spot anything obvious; Secondly, examine errors found by the compiler.
+
+(2)Semantic Errors
+[1]Semantic errors are errors in meaning.
+
+?How to detect syntax errors?
+Compare what a program does to what you expected it to do and go through a program step-by-step.
 
 六、How To Include Comments In Your Programs, Create Programs Containing More Than One Function, and Find Program Errors
 
