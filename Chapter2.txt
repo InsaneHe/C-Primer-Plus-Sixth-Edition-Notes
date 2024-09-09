@@ -172,10 +172,15 @@ Firstly, look through the source code and see whether you spot anything obvious;
 [1]Semantic errors are errors in meaning.
 
 ?How to detect syntax errors?
-Compare what a program does to what you expected it to do and go through a program step-by-step.
+1.Compare what a program does to what you expected it to do and go through a program step-by-step.
+2.Sprinkle extra "print()" statements throughtout to monitor the values of selected variables at key points in the program.
+3.Use a debugger. (A debugger is a program that enables you to run another program step-by-step and examine the value of that program's variables.)
 
-六、How To Include Comments In Your Programs, Create Programs Containing More Than One Function, and Find Program Errors
+六、Program State
+1.The set of values of all the variables at a given point in program execution. (Like a snapshot of the current state of computation.)
 
+七、Keywords and Reserved Identifiers (保留标识符)
+1.Keywords == the vocabulary of C, they are special to C, you cannot use them as identifiers.
+For example, "if", "int" and so on.
 
-七、What Keyboards Are
-
+2.Reversed Identifiers == those beginning with an underscore character and the names of the standard library functions, such as "printf()". They do not cause syntax errors as they are valid names, but the language already uses them or reverses the right to use them, so it could cause problems if you use these identifiers to mean something else.
