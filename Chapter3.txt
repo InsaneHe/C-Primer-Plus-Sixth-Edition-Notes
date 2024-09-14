@@ -1,0 +1,82 @@
+Chapter 3 Data and C
+一、A Sample Program
+1.getchar() function == reads the next input character so the program has to wait for input.
+
+For example, we can use two getchar() functions together to let the program wait instead of briefly flashing onscreen and then disappearing:
+getchar();
+getchar();
+The first getchar() function reads the newline character, and the second one causes the program to pause.
+
+2.What's New in This Program?
+(1)%f specifier == used in the printf() code to handle a floating-point value.
+
+(2).2 modifier == used after %f specifier, it fine-tunes the appearance of the output so that it displays 2 places to the right of the decimal.
+
+二、Data Variables and Constants
+1.Data == the numbers and characters that bear the information you use.
+
+2.Constant == data that are preset before a program is used and keep their values unchanged throughout the life of the program.
+
+3.Variable == data that may change or be assigned values as the program runs.
+
+?What is the difference between constants and variables?
+A variable can have its value assigned or changed while the program is running, and a constant cannot.
+
+三、Data: Data-Type Keywords
+1.Data can be divided into 2 groups: numbers & characters.
+
+2.When a datum is a constant: the compiler can usually tell its type just by THE WAY IT LOOKS.
+For example, 42 is regarded as an integer; 42.100 is regarded as floating point.
+
+3.When a datum is a variable: needs to be have its type announced in a declaration statement.
+
+4.The types can be divided into 2 families: integer types & floating-point types.
+(Depending on how they are stored in the computer, for a human, the difference between them is the way they can be written.)
+
+5.Integer
+(1)Integer == a number with no fractional part.
+
+(2)Never written with a decimal point!!!
+
+(3)Stored as binary numbers.
+
+6.Floating-Point Number
+(1)Like what mathematicians call real number.
+
+(2)Adding a decimal point makes a value a floating-point value.
+For example, 7 is an integer type, but 7.00 is a floating-point type.
+
+(3)There are more than one way to write a floating-point number.
+
+For example, 3.16E7 means to multiply 3.16 by 10 to the 7th power (3.16*10^7); that is, by 1 followed by 7 zeros. The 7 would be termed the exponent of 10.
+
+(4)Floating-point representation involves breaking up a number into a fractional part and an exponent part and storing the parts separately.
+
+For example, the 7.00 would not be stored in the same manner as the integer 7. The decimal analogy would be to write 7.0 as 0.7E1 where 0.7 is the fractional part, and the 1 is the exponent part.
+
+(5)Floating-point numbers can represent a much larger range of values than integers can.
+
+(6)Floating-point numbers are subject to larger loss of precision for some arithmatic operations such as subtracting one large number from another.
+
+(7)Floating-point values are often approximations of a true value.
+
+For example, 7.0 might be stored as a 6.99999 float value.
+
+四、Basic C Data Types
+1.The int type == a signed integer.
+[1]The range in possible values depends on the computer system. Normally, an int uses one machine word for storage.
+
+For example, for system of 16-bit: the range in values from -32768 to 32767 (minimum range).
+
+[2]One of the ways of supplying values for int variables --> Initialize.
+<1>Initialize a variable == assign it a starting, or initial value by following the variable name with the assignment operator (=) and the value you want the variable to have.
+
+<2>These declarations create and label the storage for the variables and assign starting values to each.
+
+[3]Type int Constants
+<1>integer constants == integer literals.
+
+* C treats most integer constants as type int, very large integers can be treated differently such as the long int type.
+
+[4]Printing int Values
+<1>Format specifier: %d == a int value in the list of items to be printed, it can be an int variable, an int constant, or any other expression having an int value.
