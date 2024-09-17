@@ -79,4 +79,89 @@ For example, for system of 16-bit: the range in values from -32768 to 32767 (min
 * C treats most integer constants as type int, very large integers can be treated differently such as the long int type.
 
 [4]Printing int Values
-<1>Format specifier: %d == a int value in the list of items to be printed, it can be an int variable, an int constant, or any other expression having an int value.
+<1>Format specifier: %d == an int value in the list of items to be printed, it can be an int variable, an int constant, or any other expression having an int value.
+
+<2>Let us see the program: print1.c in which the 2nd line of output, the program uses variable "ten" to provide a value for the 1st "%d" and uses whatever values happen to be lying around in memory for the next two "%d".
+
+* The reason why the compiler does not tell you this error is that printf() can have unlimited number of arguments, so it is best for you to remember to always check to see that the number of format specifiers you give to printf() matches the number of values to be displayed.
+
+[5]Oval and Hexadecimal
+<1>C assumes that integer constants are decimal, or base 10.
+
+<2>Octal (base 8) & Hexadecimal (16) numbers are popular with many programmers as each digit in a hexadecimal number corresponds to exactly 4 bits.
+
+For example, the hexadecimal digit 3 is 0011 and the hexadecimal 5 is 0101. So the hexadecimal value 35 is the bit pattern 0011 0101, and the hexadecimal value 53 is 0101 0011. This correspondence makes it easy to go back and forth between hexadecimal and binary (base 2) notation.
+
+<3>Special Prefixes == indicate which number base you are using.
+0x | 0X --> hexadecimal value --> 16 is written as 0x10 | 0X10;
+0 --> octal value --> 16 is written as 020;
+
+* This option of using different number systems does not affect how the number is stored. So you can write 16 or 020 or 0x10 and the number is stored the same way in each case and that is in the binary code.
+
+[6]Displaying Octal and Hexadecimal
+<1>%o == display an integer in octal notation.
+
+<2>%x == display an integer in hexadecimal notation
+
+<3>use specifiers: %#o, %#x or %#X to generate the 0, 0x or 0X prefixes respectively.
+
+[7]Other Integer Types
+<1>C offers 3 adjective keywords to modify the basic integer type: short, long and unsigned.
+
+* short, int, long and long long are all signed type; unsigned is used for variables that have only nonnegative values and shifts the range from 0 to 65535 in value instead of from -32768 to 32767 as the bit used to indicate the sign of signed numbers now becomes another binary digit, allowing the larger number.
+
+<2>Storage occupied: short <= int <= long <= long long (>= 64 bits).
+
+[8]Declaring Other Integer Types
+The same way as declaring int type.
+
+[9]Why Multiple Integer Types
+<1>The most common practice today is to set up long long as 64 bits, long as 32 bits, short as 16 bits and int as either 16 bits or 32 bits, depending on the machine's natural word size.
+
+<2>Consider unsigned types first when you do not need negative numbers. Then use the long type if you need to use numbers that long can handle and that int cannot but do not use long when it is not essential. But use short only if your program uses arrays of integers that are large in relation to a system's available memory or it may correspond in size to hardware registers used by particular components in a computer.
+
+<3>Integer Overflow
+{1}Happens when an integer gets too big for its type.
+
+* if an unsigned integer reaches its maximum value, it starts over at the beginning like integer does.
+
+<2>The Order of Using Types
+If you use a number on a system where int will not hold, the compiler will treat it as a long int, assuming this type is large enough;
+If the number is larger than the long maximum, C treats it as unsigned long;
+If still insufficient, C treats the value as long long or unsigned long long.
+To sum up, the order of using types is: int -> long -> unsigned long -> long long -> unsigned long long.
+
+<3>Printing short, long, long long and unsigned Types
+{1}%u == print an unsigned int.
+
+{2}%ld == print a long value.
+
+{3}%lx == print a long integer in hexadecimal format.
+
+{4}%lo == print a long integer in octal format.
+
+{5}%hd == print a short integer in decimal format.
+
+{6}%ho == print a short integer in octal format.
+
+{7}%lld == print a signed long long integer.
+
+{8}%llu == print a unsigned long long integer.
+
+<4>Using the wrong specification can produce unexpected results
+{1}If you tell printf() that the number is unsigned, it prints one value, and if you tell it that the same number is signed, it prints the other value as these two values printed have exactly the same internal representation in memory on our system.
+
+{2}The short variable is displayed the same whether you tell printf() that the variable is a short or an int because C automatically expands a short value to an int when it is passed as an argument to a function.
+
+* The computer passes the value as an int faster than passing it as a short.
+
+<5>Using Characters: Type char
+{1}char type == store characters such as letters and punctuation marks but technically called an integer type.
+
+* The char type stores integers actually instead of characters.
+
+<6>Character Constants and Initialization
+{1}C charactor constant == a single character contains between single quotes.
+
+!!! A character between DOUBLE quotes (" ") is considered as a STRING instead of a character!!!
+!!! A character stays only between quotes (' ')!!!
