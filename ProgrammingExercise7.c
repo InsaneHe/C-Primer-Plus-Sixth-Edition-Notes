@@ -2,7 +2,7 @@
 
 char Smile[25];
 
-main()
+int main()
 {
     smile();
     smile();
