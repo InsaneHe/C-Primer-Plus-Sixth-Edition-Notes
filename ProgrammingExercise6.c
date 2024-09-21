@@ -4,7 +4,7 @@ int toes;
 int n1;
 int n2;
 
-main()
+int main()
 {
     toes = 10;
 
