@@ -165,3 +165,128 @@ To sum up, the order of using types is: int -> long -> unsigned long -> long lon
 
 !!! A character between DOUBLE quotes (" ") is considered as a STRING instead of a character!!!
 !!! A character stays only between quotes (' ')!!!
+
+{2}C treats character constants as type int rather than type char.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+char grade = 'B';
+-------------------------------------------------------------------------------------------------------------------
+
+Here, 'B' is represented as the numerical value 66 stored in a 32-bit unit, but grade winds up with 66 stored in an 8-bit unit. --> This characteristic makes it possible to define a character constant such as 'FATE' by using 4 separate 8-bit ASCII codes stored in a 32-bit unit.
+
+!!!However, this is WRONG!!!
+If we do this, we will find that only the last 8 bits being used, so the variable only gets the value 'E'.
+
+<7>Nonprinting Characters
+There are 3 ways to represent Nonprinting Characters.
+{1}1st way: use the ASCII code.
+For example, the ASCII code for the beep character is 7, we can do this:
+-------------------------------------------------------------------------------------------------------------------
+char beep = 7;
+-------------------------------------------------------------------------------------------------------------------
+
+{2}2nd way: use special symbol sequences (called "escape sequences").
+For example, we use "\b" to represent backspace.
+
+* Escape sequences must be enclosed in SINGLE QUOTES when assigned to a character variable.
+For example, we can do this:
+-------------------------------------------------------------------------------------------------------------------
+char nerf = '\n';
+-------------------------------------------------------------------------------------------------------------------
+
+Look at the alert character (\a), it produces an audible or visible alert. (Depends on the hardware, with the beep being the most common.) And the alert character shall not change the active position, which means it cannot change the location on the display device at which the next character would otherwise appear.
+
+Sometimes, we might see some expressions like "\0oo" or "\xhh", they are special representations of the ASCII code. If we want to represent a character by its octal ASCII code, we can precede it with a backslash and enclose the whole thing in single quotes.
+For example, if you want to represent the alert character by using its ASCII code, we can do this:
+-------------------------------------------------------------------------------------------------------------------
+beep = '/007';
+-------------------------------------------------------------------------------------------------------------------
+
+We can also omit the leading zeros, such as '\07' or '\7' to represent the same thing.
+
+We can also use a hexadecimal form for character constants by making the backslash followed by an x or X and one to three hexadecimal digits.
+For example, the Ctrl+P character has an ASCII hex code of 10 (which is 16 in decimal), so it can be expressed as '\x10' or '\X010'.
+
+Here is the figure showing some representative integer types:
+					Examples of Integer Constants
+---------------------------------------------------------------------
+type 				|	hexadecimal 	|	octal 	| 	decimal 	|
+---------------------------------------------------------------------
+char 				|	\0x41 			|	\0101 	| 	N.A. 		|
+---------------------------------------------------------------------
+int 				|	0x41 			|	0101 	| 	65 		    |
+---------------------------------------------------------------------
+unsigned int 		|	0x41u 			|	0101u 	| 	65u 		|
+---------------------------------------------------------------------
+long 				|	0x41L 			|	0101L 	| 	65L 		|
+---------------------------------------------------------------------
+unsigned long 		|	0x41UL 			|	0101UL 	| 	65UL 		|
+---------------------------------------------------------------------
+long long 			|	0x41LL 			|	0101LL 	| 	65LL 		|
+---------------------------------------------------------------------
+unsigned long long 	|	0x41ULL 		|	0101ULL | 	65ULL 		|
+---------------------------------------------------------------------
+
+?Why are not the escape sequences enclosed in single quotes?
+When a character, be it an escape sequence or not, is part of a string of characters enclosed in double quotes, do not enclose it in single quotes.
+
+* Character String == a string of characters enclosed in double quotes.
+
+?When should I use the ASCII code, and when should I use the escape sequences?
+When we have a choice, we should use the escape sequences. Because they are more mnemonic and more portable.
+
+<8>The _Bool Type
+{1}Boolean values == the logical values "true" & "false". C uses the value 1 for true and 0 for false. Thus the _Bool type is just an integer type and only requires 1 bit of memory.
+
+<9>Portable Types: stdint.h and inttypes.h
+{1}How to reach such an aim: let C have types that have the same meaning regardless of the system?
+The answer is that C creates more names for the existing types, and to define these new names, we use a header file "stdint.h".
+
+{2}Exact-width integer type
+For example, int32_t == the type for a 32-bit signed integer. But a system that uses 32-bit int defines it as an alias for int; another system that uses 16-bit int and 32-bit long defines it (the same) as an alias for long. And if we use int32_t type to write programs and include stdint.h, the compiler will substitute int or long for the type in a manner appropriate for your particular program.
+
+* int32_t is exactly 32 bits, no less or no more.
+
+!!!There is a chance that the underlying system might not support these choices.
+
+?What if a system cannot support exact-width types?
+There is a second category of alternative names that are required. --> Minimum Width Types.
+
+{3}Minimum Width Types
+Minimum Width Types == promises the type is at least big enough to meet the specification and that no other type that can do the job is smaller.
+For example, the int_fast8_t will be defined as an alternative name for the integer type on your system that allows the fastest calculations for 8-bit signed values.
+
+{4}intmax_t == a type that can hold any valid signed integer value; uintmax_t == the largest available unsigned type.
+
+{5}As printf() needs specific specifiers to print particular types, but some requires "%d" to print int32_t, others might require "%ld" to print it, there are some "string macros" to be used to display the portable types.
+For example, the inttypes.h header file defines PRId32 as a string representing the appropriate specifier for a 32-bit signed value.
+
+<10>Types float, double, and long double
+{1}Floating -point numbers == type float, double, or long double. It enables you to represent a much greater range of numbers, including decimal fractions. This representation is similar to scientific notation.
+For example:
+-------------------------------------------------------------------------
+Number 			| 	Scientific Notation 	| 	Exponential Notation 	|
+-------------------------------------------------------------------------
+1,000,000,000 	| 	= 1.0*10^9 				| 	= 1.0e9 				|
+-------------------------------------------------------------------------
+123,000 		| 	= 1.23*10^5 			|	= 1.23e5 				|
+-------------------------------------------------------------------------
+322.56 			| 	= 3.2256*10^2 			|	= 3.2256e2				|
+-------------------------------------------------------------------------
+0.000056 		| 	= 5.6*10^(-5) 			| 	= 5.6e-5				|
+-------------------------------------------------------------------------
+
+The 1st column is the usual notation; the 2nd column is the scientific notation; the 3rd column is the exponential notation, or e-notation, which is the way scientific notation is usually written for and by computers, with the e followed by the power of 10.
+
+{2}A float has to be able to represent at least 6 significant figures and allow a range of at least 10^(-37) to 10^37.
+
+For "6 significant figures" part, as a float has to represent accurately at least the first 6 digits in a number such as 33.333333.
+
+For "a range of at least 10^(-37) to 10^37" part, systems often use 32 bits to store a floating-point number, among these 32 bits, 8 bits are used to give the exponent its value and sign, and the 24 bits are used to represent the nonexponent part, called the mantissa or significand, and its sign.
+For example: a float: 1.6e-19, "1.6" is represented by the 24 bits, and "-19" is represented by the 8 bits.
+
+{3}Another float type provided by C is double. Typical double representations use 64 bits instead of 32. It also has the same minimum range requirements as float, but it extends the minumum number of significant figures that can be represented to 10.
+
+{4}The 3rd floating-point type provided by C is long double, which is at least as precise as double.
+
+<11>Floating-Point Constants (Literals)
