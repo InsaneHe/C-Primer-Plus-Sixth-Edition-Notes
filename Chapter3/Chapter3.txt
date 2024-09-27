@@ -368,3 +368,42 @@ For example, the "&" prefix used with the scanf() function creates a pointer tel
 五、Using Data Types
 1.Declare them at the beginning of the function that uses them and choose a name for the variable that suggests its meaning.
 
+2.When converting floating-point values to integers, C simply THROWS AWAY the decimal part (truncation) instead of rounding; and because a float is guaranteed to represent only the 1st six digits accurately, if you assign a value that has more than 6 digits after its decimal point, the value will lose some precision when assigned to the variable.
+
+六、Arguments and Pitfalls
+1.Arguments == the items of information passed to a function.
+
+2.String == a series of characters in quotes.
+
+3.C uses commas to separate arguments to a function, however, there are some functions that are not limited to a particular number of arguments such as printf() and scanf(), these 2 functions use the 1st argument to indicate how many additional arguments are coming as each format specification in the initial string indicates an additional argument.
+
+七、Take a look at the "badcount.c" file:
+We can see that using %d to display a float value does not convert the float value to the nearest int; also, the results you get for too few arguments or the wrong kind of argument differ from platform to platform and can from trial to trial.
+
+八、One More Example: Escape Sequences
+1.What Happens When the Program Runs
+(1)The effect of the backspace character (\b) is to move the cursor 1 position to the left and does not erase the characters that are backed over at the same time.
+
+* Sometimes there is a circumstance called "Destructive Backspacing" that will erase the characters that are backed over at the same time.
+
+(2)The newline character (\n) moves the cursor to the beginning of the next line.
+
+(3)The tab character (\t) moves the cursor to the next tab stop on that line.
+
+(4)The return character (\r) positions the cursor at the beginning of the current line.
+
+2.Flushing the Output
+(1)?When does printf() actually send output to the screen?
+Step1: printf() send output to an intermediate storage area called a buffer.
+Step2: every now and then, the material in the buffer is sent to the screen. (The output is sent from the buffer to the screen when the buffer gets full, when a newline character is encountered or when there is impending input.)
+
+* Flushing the buffer == sending the output from the buffer to the screen or file.
+
+!We may encounter an older implementation for which scanf() does not force a flush!
+This would result in the program looking for your input without having yet displayed the prompt onscreen, and we can use a newline character to flush the buffer.
+-------------------------------------------------------------------------------------------------------------------
+printf("Enter your desired monthly salary:\n")
+scanf("%f", &salary)
+-------------------------------------------------------------------------------------------------------------------
+
+This code works whether or not impending input flushes the buffer and it also prevents us from entering data on the same line as the prompting string by putting the cursor on the next line.
