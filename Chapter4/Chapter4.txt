@@ -1,0 +1,96 @@
+Chapter 4 Chracter Strings and Formatted Input/Output
+一、Introductory Program
+1.Take a look at the talkback.c program
+There are some new features:
+(1)It uses an array to hold a character string which uses a series of consecutive bytes in memory, each able to hold a single character value.
+
+(2)It uses %s to represent a string, here in this program, variable "name" unlike "weight", does not use the & prefix when used with scanf() because "name" itself is an address just like "&weight".
+
+(3)The "DENSITY" is a symbolic constant defined by the C processor to represent the value 62.4.
+
+(4)strlen() function is used to find the length of a string.
+
+2.Character Strings: An Introduction
+(1)Character string == a series of one or more characters.
+
+!The double quotation marks are NOT part of the string; The single quotation marks, however, identify a character!
+
+3.Type char Arrays and the Null Character
+(1)In C, strings are stored in an array of type char, characters are stored in adjacent memory cells, one character per cell, and an array consists of adjacent memory locations.
+
+For example:
+|Z|i|n|g| |w|e|n|t| |t|h|e| |s|t|r|i|n|g|s| |o|f| |m|y| |h|e|a|r|t|!|\0|
+Here, each cell including " " is one byte, and "/0" is the null character.
+
+!The character "\0" in the last array position is used to mark the end of a string, and it is not the digit 0, it is the nonprinting character whose ASCII code value is 0.!
+
+* Strings in C are always stored with this terminating null character which means that the array must have at least 1 or more cell than the number of characters to be stored.
+
+(2)Array == an ordered sequence of data elements of one type.
+The number within the brackets indicates the number of elements in the array.
+
+For example: char name[5];
+Here 5 means the char variable "name" consists of at most 5 elements in it.
+
+4.Using Strings
+(1)Take a look at the praise.c program.
+{1}After scanf() starts to read input, it stops reading at the 1st whitespace/blank/tab/newline it encounters. So it reaches the blank between "Angela" and "Plains".
+
+!Here, scanf() is used with %s to read ONLY A SINGLE WORD instead of a whole phrase as a string.!
+
+(2)Strings Versus Characters
+[1]String constant "x" is not the same as the character constant 'x':
+{1}String constant "x" is a basic type (char) but character constant "x" is a derived type, an array of char.
+
+{2}The 2nd difference is that "x" really consists of 2 characters, 'x' and '\0', the null character.
+
+5.The strlen() Function
+(1)strlen() == gives the length of a string in characters.
+
+!Unlike sizeof(), strlen()!
+
+For example, take a look at the praise2.c program:
+Here we use 2 methods to handle long printf() statements. The 1st one spreads one printf() over 2 lines. (We CANNOT break between the quotation marks which is in the middle of a string.) The 2nd one uses 2 printf() to print just 1 line.
+
+Also, the array name has 40 memory cells which is reported by sizeof operator; only the first 11 cells are used to hold "Serendipity" which is reported by strlen(). The 12th cell in the array name contains the null character, whose presence tells strlen() to stop counting.
+|S|e|r|e|n|d|i|p|i|t|y|\0||||||……||
+						↑
+						Terminating null character.
+strlen() gives you the exact number of characters (including spaces and punctuation) in the string; the sizeof operator gives you a number one larger because it also counts the invisible null character used to end the string.
+
+(2)%zd specifier is used for the type used by the sizeof operator, this also applies for type returned by strlen().
+
+(3)Parentheses are required for types but are optional for particular quantities.
+
+For example, you would use "sizeof(char)" or "sizeof(float)" but can use "sizeof name" or "sizeof 6.28", it is all right, however, to use parentheses in these cases too, such as "sizeof(name)" or "sizeof(6.28)".
+
+二、Constants and the C Preprocessor
+1.Symbolic constant == used in a statement that have the computer substitute in the actual value later.
+
+?Why do we use a name by using symbolic constants instead of using a number?
+First, a name tells you more than a number does; Second, you only need to alter the definition of the symbolic constant rather than find and change every occurance of the constant in the program when it becomes necessary to change its value.
+
+2.How To Set Up a Symbolic Constant
+(1)One way is to declare a variable and set it equal to the desired constant.
+
+For example:
+--------------------------------------------------------------------------------------------------------------------
+float taxrate;
+taxrate = 0.015;
+--------------------------------------------------------------------------------------------------------------------
+
+But in this way, "taxrate" is a variable, the program might change its value by accident.
+
+(2)The other way is to add a line like the following at the top of the file containing your program.
+--------------------------------------------------------------------------------------------------------------------
+#define TAXRATE 0.015
+--------------------------------------------------------------------------------------------------------------------
+
+Here, the value 0.015 will be substituted everywhere you have used TAXRATE which is called a compiler-time substitution. Such defined constants are termed manifest constants.
+
+Also, this construction does not use the "=" sign and no semicolon is used as this is a substitution mechanism handled by the preprocessor instead of a C statement.
+
+* We tend to capitalize the constants, that is to say, we type constants in uppercase; or we can prefix a name with a "c_" or "k_" to indicate a constant.
+
+(3)Take a look at the pizza.c program:
+The %1.2f in the printf() statement causes the printout to be rounded to 2 decimal places.
