@@ -94,3 +94,76 @@ Also, this construction does not use the "=" sign and no semicolon is used as th
 
 (3)Take a look at the pizza.c program:
 The %1.2f in the printf() statement causes the printout to be rounded to 2 decimal places.
+
+(4)The #define statement can be used for character and string constants too. (Use single quotes for the former and double quotes for the latter.)
+
+!Everything following the symbolic name is substituted for it!
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+/* the following is wrong */
+#define TOES = 20
+-------------------------------------------------------------------------------------------------------------------
+
+If you do this, TOE is replaced by "= 20" instead of just "20".
+-------------------------------------------------------------------------------------------------------------------
+digits = fingers + TOES;
+-------------------------------------------------------------------------------------------------------------------
+
+This statement will be interpreted as:
+-------------------------------------------------------------------------------------------------------------------
+digits = fingers + = 20;
+-------------------------------------------------------------------------------------------------------------------
+
+3.The "const" Modifier
+(1)A second way to create symbolic constants is to use the const keyword to convert a declaration for a variable into a declaration for a constant.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+const int MONTHS = 12; // MONTHS a symbolic constant for 12
+-------------------------------------------------------------------------------------------------------------------
+
+This makes MONTHS into a read-only value which means that you cannot alter the value of MONTHS.
+
+(2)A third way to create symbolic constants is to use "enum".
+
+4.Manifest Constants on the Job
+(1)C header files: limits.h == supplies detailed information about the size limits of integer types.
+
+(2)C header files: float.h == supplies detailed information about the size limits of float types.
+
+(3)The files above define a series of manifest constants that apply to your implementation.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+#define INT_MAX +32767
+#define INT_MIN -32768
+-------------------------------------------------------------------------------------------------------------------
+
+三、Exploring and Exploiting printf() and scanf()
+1.printf() and scanf() == input/output functions or I/O functions for short.
+
+2.The printf() Function
+(1)conversion specifications == specify how the data is to be converted into displayable form.
+
+(2)The format for using printf():
+-------------------------------------------------------------------------------------------------------------------
+printf(Control-string, item1, item2, ...);
+-------------------------------------------------------------------------------------------------------------------
+
+Item1, item2 and so on == the items to be printed.
+Control-string == a character string describing how the items are to be printed, it contains 2 distinct forms of information: Characters that are actually printed & conversion specifications.
+
+(3)If you want to print the sign "%" itself, you CANNOT use a lone % sign, instead, you should use 2 % symbols.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+pc = 2*6;
+printf("Only %d%% of Sally's gribbles were edible.\n", pc);
+-------------------------------------------------------------------------------------------------------------------
+
+The result will be:
+Only 12% of Sally's gribbles were edible.
+
+3.Conversion Specification Modifiers for printf()
+(1)We can modify a basic conversion specification by inserting modifiers between the % and the defining conversion character.
