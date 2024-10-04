@@ -167,3 +167,103 @@ Only 12% of Sally's gribbles were edible.
 
 3.Conversion Specification Modifiers for printf()
 (1)We can modify a basic conversion specification by inserting modifiers between the % and the defining conversion character.
+
+(2)Type Portability
+[1]The sizeof operator returns the size in bytes of a type or value. What it returns should be an integer, but the standard only provides that it should be an unsigned integer, which means it can be unsigned int/unsigned long/unsigned long long. --> You might use %u on one system, %lu on another system and %llu on the third one to use printf() to display a sizeof expression. --> You have to research the correct usage for your system and might need to alter your program if you move it to a different system.
+
+(3)Conversion of "float" Arguments
+[1]All float arguments to printf() as well as to any other C function not using an explicit prototype are still automatically converted to double.
+
+!The content between P118 to P124 are omitted, and you can check it on the original book!
+
+Here is the content from P125 to later pages:
+* Passing Arguments
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+printf("%ld %ld %ld %ld\n", n1, n2, n3, n4);
+-------------------------------------------------------------------------------------------------------------------
+
+!Be careful to those below when you might mismatch the variable types and coversion specifiers!
+The program places the values in an area of memory called the stack according to the types of the variables instead of the conversion specifiers.
+
+Take a look at the floatcnv.c program to check the values assigned to n1, n2, n3, n4. The computer places 8 bytes on the stack (float is converted to double); it places 8 more bytes for n2; 4 bytes each for n3 and n4. Then control shifts to the printf() function which reads the values off the stack but according to the conversion specifiers.
+
+(4)The Return Value of printf()
+[1]A C function generally has a return value that the function computes and returns to the calling program.
+
+[2]printf() function also has a return value which is the number of characters it printed. And if there is an output error, it will return a negative value.
+
+* The return value returned by printf() can be used to check for output errors.
+
+[3]Take a look at the prntval.c program
+We can assign the return value to a certain variable by using "variable A = printf(...)" which performs 2 tasks: printing information & assigning a value to a variable. The count includes all the printed characters including the spaces and the unseen newline character.
+
+(5)Printing Long Strings
+[1]C ignores whitespaces (spaces, tabs, newlines) except when used to separate elements.
+
+[2]We can spread a statement over several lines by putting our line breaks between elements, but we CANNOT break a quoted string in the middle.
+
+[3]We have 3 methods to split a string:
+{1}Use more than one printf() statement and do not end the 1st printf() with a \n character.
+
+{2}Terminate the end of the 1st line with a backslash/return combination but the next line has to start at the far left, if we indent that line, the spaces become part of the string.
+
+{3}String concatenation, which means following one QUOTED string constant with another, separated only by whitespace, C will treat it as a single string.
+
+(6)Using scanf()
+[1]The scanf() function uses pointers to variables.
+
+[2]If you use scanf() to read a value for one of the basic variable types, we should precede the variable name with an &.
+
+[3]If you use scanf() to read a string into a character array, DO NOT use an &.
+
+[4]The scanf() function uses whitespace (newlines, tabs and spaces) to decide how to divide the input into separate fields. It matches up consecutive conversion specifications to consecutive fields, skipping over the whitespace in between.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+Enter your age, assets, and favorite pet.
+  42
+
+  	2121.45
+
+   guppy
+-------------------------------------------------------------------------------------------------------------------
+
+It will print out:
+-------------------------------------------------------------------------------------------------------------------
+42 $2121.45 guppy
+-------------------------------------------------------------------------------------------------------------------
+
+!The only exception to this is the %c specification, which reads the very next character, even if that character is whitespace!
+
+[5]The main difference between printf() and scanf()
+printf() uses %f, %e, %E, %g and %G for both type float and type double; scanf() uses them just for type float, requiring the "l" modifier for double.
+
+(7)The scanf() View of Input
+[1]For example, we use a %d specifier to read an integer.
+Then the scanf() will skip over whitespace characters (spaces, tabs, and newlines) until it finds a non-whitespace character as it wants to read an integer, when it reads a digit or a sign (+ or -), it saves the character and then reads the next one; if it is a digit, it saves the digit and reads the next character. scanf() continues reading and saving characters until it encounters a nondigit, then it will conclude that it has reached the end of the integer.
+
+!scanf() places the nondigit back into the input which means that the next time the program goes to read input, it starts at the previously rejected, nondigit character!
+
+[2]If we use a field width, scanf() halts at the field end or at the 1st whitespace, whichever comes first.
+
+[3]What if the 1st non-whitespace character is an A instead of a digit, for example?
+scanf() will stop right there and places the A back in the input, no value will be assigned to the specified variable, when the program reads input the next time, it will start at the A again.
+
+[4]Several Circumstances
+{1}If our program has only %d specifiers, scanf() will never get past that A. If we use a scanf() statement with several specifiers, C requires the function to stop reading input at the 1st failure.
+
+{2}If we use an %s specifier, any character other than whitespace is acceptable. scanf() will skip whitespace to the 1st non-whitespace character and then saves up non-whitespace characters until hitting whitespace again.
+
+{3}If we use a %c specifier, all input charaters are acceptable. If the next input character is a space or a newline, a space or a newline is assigned to the indicated variable; whitespace is not skipped.
+
+(8)Regular Characters in the Format String
+Ordinary characters other than the space character must be matched exactly by the input string.
+
+For example, suppose we place a comma between 2 specifiers:
+-------------------------------------------------------------------------------------------------------------------
+scanf("%d,%d", &n, &m);
+-------------------------------------------------------------------------------------------------------------------
+
+The scanf() function will interpret it to mean that you will type a number, type a comma, and then type the 2nd number. But becase scanf() skips over whitespace preceding an integer, we can type a space or newline after the comma when entering the input.
