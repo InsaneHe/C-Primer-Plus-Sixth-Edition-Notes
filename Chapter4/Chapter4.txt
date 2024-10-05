@@ -267,3 +267,74 @@ scanf("%d,%d", &n, &m);
 -------------------------------------------------------------------------------------------------------------------
 
 The scanf() function will interpret it to mean that you will type a number, type a comma, and then type the 2nd number. But becase scanf() skips over whitespace preceding an integer, we can type a space or newline after the comma when entering the input.
+
+A space in the format string == skip over any whitespace before the next input item. (Here, the concept of "any whitespace" includes the special cases of no whitespace.)
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+scanf("%d ,%d", &n, &m);
+-------------------------------------------------------------------------------------------------------------------
+
+Here, we put a whitespace after the 1st %d, and it will be skip over when the scanf() reads the input items.
+
+!Except for %c, it automatically skip over whitespace preceding an input value, so for %c, if it is preceded by a space in the format string, scanf() does skip to the 1st non-whitespace character!
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+scanf("%c", &ch);
+-------------------------------------------------------------------------------------------------------------------
+
+This sentence will read the 1st character encountered in input, and scanf("%c", &ch) reads the 1st non-whitespace character encountered.
+
+(9)The scanf() Return Value
+It returns the number of items that it successfully reads. When it reads no items, it returns the value 0; It returns EOF when it detects the condition known as "end of file" (EOF == a special value defined in the stdio.h file.)
+
+(10)The * Modifier with printf() and scanf()
+You can use * instead of a number for the field width when you do not want to set a field width in advance but want the program to specify it. But remember to add an argument to tell what the field width should be.
+
+For example, if you have the conversion specifier %*d, the argument list should include a value for * and a value for d.
+
+Take a look at the varwid.c program:
+-------------------------------------------------------------------------------------------------------------------
+printf("The number is :%*d:\n", width, number);
+-------------------------------------------------------------------------------------------------------------------
+
+Here, what you set to "width" will be assigned to *, and what you set to "number" will be assigned to d.
+
+!The * serves a different purpose for scanf(), when placed between the % and the specifier letter, it causes that function to skip over corresponding input.!
+
+Take a look at the skip2.c program:
+-------------------------------------------------------------------------------------------------------------------
+scanf("%*d %*d %d", &n);
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the first 2 %*d will not accept the values you set even if you enter 3 values. (The first 2 value entered will be assigned to the first 2 %*d, and these values will not be accepted.) ONLY the 3rd value you enter will be accepted and assigned to %d and taken by &n.
+
+This facility can be used when a program needs to read a particular column of a file that has data arranged in uniform columns.
+
+(11)Usage Tips for printf()
+[1]When you want to print columns of data --> Specifying fixed field widths.
+
+!The output will be cleaned up by using a sufficiently large fixed field width!
+
+!Even if the values you set and the statement remains the same, the outcome printed out can be different!
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+printf("%d %d %d\n", val1, val2, val3);
+-------------------------------------------------------------------------------------------------------------------
+
+It might come out these outcomes after executed 3 times even if the values of val1, val2 and val3 are not changed:
+-------------------------------------------------------------------------------------------------------------------
+12 234 1222
+4 5 23
+22334 2322 10001
+-------------------------------------------------------------------------------------------------------------------
+
+[2]If a number is to be embedded in a phrase, it is often convenient to specify a field as small or smaller than the expected number width. This will make the number fit in without unnecessary blanks.
+
+* locale == gives a C program the option of choosing a particular locale, thus printf() and scanf() would use the local convention when displaying and reading floating-point values.
+
+For example, some countries use a period to separate the integer part of a decimal value from the fractional part (3.14159); the other might use a comma to do the same thing (3,14159). By setting locale, we can choose the way of presenting numbers.
+
+There are 2 locales: "C" and "", programs use the "C" locale which is U.S. usage; "" locale stands for a local locale in use on our system.
