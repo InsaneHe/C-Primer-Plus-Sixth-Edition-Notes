@@ -1,0 +1,54 @@
+Chapter 5 Operators, Expressions, and Statements
+一、Introducing Loops
+1.Take a look at the shoes1.c and shoes2.c program:
+When the program first reaches the while statement, it checks to see whether the condition within parentheses is true, if it is true, the program will proceed to the next statement(s). After that, the program returns to the while portion to check the condition again until the condition in the while portion is false. At that time, the control passes to the 1st statement following the while loop.
+
+2.A block == the section of program between and including the braces.
+
+二、Fundamental Operators
+1.Operators == represent arithmetic operations.
+
+2.Operators used for basic arithmetic: =, +, -, *, and /.
+
+3.Assignment Operator: =
+(1)The equal sign in C is not "equals", rather, it is a value-assigning operator, which means that the left of the = sign is the name of a variable, and the item on the right is the value assigned to the variable.
+
+(2)The left of the = sign must refer to a storage location, the simplest way is to use the name of a variable.
+
+(3)rvalue == those you cannot assign values to, such as constant.
+
+(4)modifiable lvalue == those entities to which you can assign values.
+
+(5)Some Terminology: Data Objects, Lvalues, Rvalues, and Operands
+[1]Data object == a general term for a region of data storage that can be used to hold values.
+
+[2]Lvalues == name or expression that identidies a particular data object.
+
+* When something is said to be an lvalue, it means 2 things:
+First, it specifies an object, hence referred to an address in memory;
+Second, it could be used on the left side of an assignment operator, hence the "l" in lvalue.
+
+[3]Rvalue == quantities that can be assigned to modifiable lvalues but which are not themselves lvalues.
+
+For example, constants, variables, or any other expression that yields a value, such as a function call.
+
+[4]Operand == what operators operate on such as "item".
+
+4.Addition Operator: +
+(1)Addition operator == causes the 2 values on either side of it to be added together.
+
+5.Subtraction Operator: -
+(1)Subtraction Operator == causes the number after the - sign to be subtracted from the number before the sign.
+
+* The + and - operators == binary, or dyadic operators, which means that they require 2 operands.
+
+6.Sign Operators: - and +
+(1)The minus sign == can also indicate or to change the algebraic sign of a value, and it is called unary operator when used in this way, which means it takes just 1 operand.
+
+(2)A unary + operator == does alter the value or the sign of its operand such as: dozen = +12;
+
+7.Multiplication Operator: *
+(1)Multiplication == indicated by the * symbol.
+
+(2)Exponential Growth
+
