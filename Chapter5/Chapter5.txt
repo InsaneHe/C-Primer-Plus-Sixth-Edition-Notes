@@ -51,4 +51,141 @@ For example, constants, variables, or any other expression that yields a value, 
 (1)Multiplication == indicated by the * symbol.
 
 (2)Exponential Growth
+If we need to conduct exponential calculation, we can use: x = a*a*a……*a
+
+For example, if we want to calculate x = 4^3: we can type: x = 4 * 4 * 4;
+
+8.Division Operator: /
+(1)C uses the / symbol to represent division. The value to the left of the / is divided by the value to the right.
+
+!Floating-type division gives a floating-point answer, but integer division yields an integer answer, normally, we need to avoid mixing types!
+
+(2)Truncation == in C, any fraction resulting from integer division is discarded.
+
+(3)Integer division does not round to the nearest integer, but always truncates. When you mixed integers with floating point, the answer came out the same as floating point. The computer is not really capable of dividing a floating-point type by an integer type, so the compiler converts both operands to a single type. (Here, the integer is converted to floating point before division.)
+
+(4)When C encounters negative numbers, the rounding procedure consists of finding the largest integer smaller than or equal to the floating-point number, for example: -3.8 will be converted to -4. Another way is to dump the fractional part (truncating toward zero), for example: -3.8 will be converted to -3. C99 standard says to truncate toward zero.
+
+9.Operator Precedence
+(1)C sets up an operator pecking order. Each operator is assigned a precedence level.
+
+(2)Expression tree == a type of diagram used to represent the order of evaluation, which should be checked from lower part to higher one.
+
+三、Some Additional Operators
+1.The sizeof Operator and the size_t Type
+(1)The operand can be a specific data object, such as the name of a variable, or it can be a type. If it is a type, the operand must be enclosed in parentheses.
+
+(2)C has a typedef mechanism, it lets you create an alias for an existing type.
+
+2.Modulus Operator: %
+(1)Modulus operator == gives the remainder that results when the integer to its left is divided by the integer to its right.
+
+!It CANNOT be used with floating-point numbers!
+
+(2)?What can it do?
+It helps you control the flow of a program.
+
+(3)You get a negative modulus value if the 1st operand is negative, and you get a positive modulus otherwise.
+
+For example:
+11 / 5 is 2, and 11 % 5 is 1
+11 / -5 is -2, and 11 % -2 is 1
+-11 / -5 is 2, and -11 % -5 is -1
+-11 / 5 is -2, and -11 % 5 is -1
+
+3.Increment and Decrement Operators: ++ and --
+(1)Increment operator == increments (increases) the value of its operand by 1, it will be in 2 varieties: the 1st one has the ++ come before the affected variable (prefix mode); the 2nd one has the ++ after the affected variable (postfix mode). These 2 modes differ with regard to the precise time that the incrementing takes place as shown in the add_one.c program.
+
+(2)The difference between prefix and postfix.
+
+For example, take a look at the post_pre.c program:
+a_post has the value of a BEFORE it has been changed; pre_b has the value of b AFTER the value of b that has been changed.
+
+* The choice does not matter if one of these increment operators is used by itself, as in a solitary "ego++;" statement; It does matter, however, when the operator and its operand are part of a larger expression.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+while (++shoe < 18.5)
+-------------------------------------------------------------------------------------------------------------------
+
+This test condition provides a table up to size 18, but if you use "shoe++", the table will go to size 19 as shoe will be increased after the comparison instead of before.
+
+To be more precise:
+For example:
+Prefix:
+-------------------------------------------------------------------------------------------------------------------
+q = 2*++a;
+-------------------------------------------------------------------------------------------------------------------
+
+First, increment a by 1; then, multiply a by 2 and assign to q.
+
+Postfix:
+-------------------------------------------------------------------------------------------------------------------
+q = 2*a++;
+-------------------------------------------------------------------------------------------------------------------
+
+First, multiply a by 2, assign to q; then, increment a by 1.
+
+(3)Decrementing: --
+Decrement operator == "--".
+
+(4)Precedence
+[1]The increment and decrement operators == very high precedence of association but lower than parentheses.
+
+[2]The increment and decrement operators affect a variable (a modifiable lvalue), those like "x*y" is not a modifiable lvalue.
+
+(5)Don't Be Too Clever
+[1]C might not execute the program according to the order that we suppose.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+while (num < 21)
+	{
+		printf("%10d %10d\n", num, num*num++);
+	}
+-------------------------------------------------------------------------------------------------------------------
+
+The printf() might evaluate the LAST argument first, and increment num before getting to the other argument, thus, it might print:
+-------------------------------------------------------------------------------------------------------------------
+6          25
+-------------------------------------------------------------------------------------------------------------------
+
+And there might be more kinds of outcomes.
+
+[2]In C, the compiler can choose which arguments in a function to evaluate first, but it can cause trouble if you use an increment operator on a function argument.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+ans = num/2 + 5*(1 + num++);
+-------------------------------------------------------------------------------------------------------------------
+
+It might do the LAST term first, increase num, and use the new value in num/2. (There is no guarantee).
+
+[3]Another troublesome case:
+-------------------------------------------------------------------------------------------------------------------
+n = 3;
+y = n++ + n++;
+-------------------------------------------------------------------------------------------------------------------
+
+A compiler can use the old value of n twice in evaluating y and then increment n twice. This gives y the value 6 and n the value 5.
+
+[4]?How to avoid these problems?
+{1}Do not use increment or decrement operators on a variable that is part of more than one argument of a function.
+
+{2}Do not use increment or decrement operators on a variable that appears more than once in an expression.
+
+四、Expressions and Statements
+1.Expressions == a combination of operators and operands.
+
+2.Subexpression == a combination of smaller expressions.
+
+3.Every Expression Has a Value
+(1)Every C expression has a value.
+
+4.Statements
+(1)Statement == the primary building blocks of a program.
+
+(2)Program == a series of statements with some necessary punctuation.
+
+(3)Expression + an ; at the end of the expression == statement. (These are called expression statements).
 
