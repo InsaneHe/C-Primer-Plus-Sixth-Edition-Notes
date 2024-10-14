@@ -189,3 +189,67 @@ A compiler can use the old value of n twice in evaluating y and then increment n
 
 (3)Expression + an ; at the end of the expression == statement. (These are called expression statements).
 
+(4)If you remove the semicolon from a declaration statement, it will not be an expression and it does not have a value.
+
+(5)Assignment statement == the workhorse of many programs, it assigns a value to a variable and consists of a variable name followed by the assignment operator (=) followed by an expression followed by a semicolon.
+
+(6)Function statement == causes the function to do whatever it does.
+
+(7)While statement (which belongs to structured statements) == 3 parts: 1st, the keyword "while"; 2nd, in parentheses, a test condition; 3rd, the statement that is performed if the test is met.
+
+!If only 1 statement is included in the loop (such as a simple statement), there are no braces needed to mark it off, or the statement can be a compound statement!
+
+(8)Side Effects and Sequence Points
+[1]Side effect == the modification of a data object or file.
+
+[2]Sequence point == a point in program execution at which all side effects are evaluated before going on to the next step.
+
+For example: the semicolon in a statement marks a sequence point. So does the end of any full expression.
+
+[3]Full expression == one that is not a subexpression of a larger expression.
+
+For example: the expression in an expression statement and the expression serving as a test condition for a while loop.
+
+As shown here:
+-------------------------------------------------------------------------------------------------------------------
+while (guests++ < 10)
+	printf("%d \n", guests);
+-------------------------------------------------------------------------------------------------------------------
+
+Many people assume that guests will be incremented after it is used in the printf() statement. However, it is not the case because the guest++ < 10 is a full expression. It is a while loop test condition, so the end of this expression is a sequence point. So C guarantees that the side effect (incrementing guests) takes place before the program moves on to printf().
+
+However, things change in this case:
+-------------------------------------------------------------------------------------------------------------------
+y = (4 + x++) + (6 + x++);
+-------------------------------------------------------------------------------------------------------------------
+
+The expression "4 + x++" is not a full expression, so C does not guarantee that x will be incremented immediately after the subexpression "4 + x++" is evaluated. Instead, the full expression here is the entire assignment statement and the semicolon marks the sequence point, so all that C guarantees is that x will have been incremented twice by the time the program moves to the following statement. But C does not guarantee whether x is incremented after each subexpression is evaluated or only after all the expressions have been evaluated, that is what we should avoid.
+
+5.Compound Statements (Blocks)
+(1)Coumpound statement == 2 or more statements grouped together by enclosing them in braces, which is also called a block.
+
+五、Type Conversions
+1.If you mix types inadvertently, a set of rules that was used by C to make type conversions automatically, can be a danger.
+
+2.The basic rules can be checked on page 174.
+(1)Promotion == conversions to larger types.
+
+For example, float --> double.
+
+(2)Demotion == a value is converted to a lower-ranking type.
+
+!Promotion is usually a smooth, uneventful process, but demotion can lead to real trouble as the lower-ranking type might not be big enough to hold the complete number!
+
+(3)What happens when the converted value will not fit into the destination can be checked on page 174 and the convert.c program.
+
+3.The Cast Operator
+(1)We should steer clear of automatic type conversions especially of demotions.
+
+(2)Cast == the method for demanding the precise type conversion that you want or else documenting that you know you are making a type conversion, it consists of preceding the quantity with the name of the desired type in parentheses.
+
+(3)Cast operator == the parentheses and type name together.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+mice = (int) 1.6 + (int) 1.7;
+-------------------------------------------------------------------------------------------------------------------
