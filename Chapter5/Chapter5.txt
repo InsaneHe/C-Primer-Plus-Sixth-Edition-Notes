@@ -253,3 +253,23 @@ For example:
 -------------------------------------------------------------------------------------------------------------------
 mice = (int) 1.6 + (int) 1.7;
 -------------------------------------------------------------------------------------------------------------------
+
+六、Function with Arguments
+1.If the function takes no arguments, we will make the function heading contain the keyword void.
+
+2.Formal argument == formal parameter, which is the variable created when declaring an argument.
+
+3.Actual argument == actual parameter, which is the value passed by the function call.
+
+For example, take a look at the pound.c program:
+-------------------------------------------------------------------------------------------------------------------
+void pound(int n)
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the formal parameter is the int variable called n, making a function call like pound(10) acts to assign the value 10 to n, which passes the actual argument 10 to n.
+
+!We usually use argument for actual argument or actual parameter and use parameter for formal parameter or formal argument!
+
+4.Variable names are private to the function, which means that a name defined in one function does not conflict with the same name defined elsewhere.
+
+5.Prototype == a function declaration that describes a function's return value and its arguments.
