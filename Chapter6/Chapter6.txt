@@ -1,0 +1,46 @@
+Chapter 6 C Control Statements: Looping
+一、Revisiting the while Loop
+1.Program Comments
+(1)== operator == equality operator.
+
+(2)It is not the same as "=", which assigns value to variable.
+
+(3)Pseudocode == express a program in simple English that parallels the forms of a computer language.
+
+
+二、The while Statement
+1.Terminating a while Loop
+(1)General form of the while loop:
+--------------------------------------------------------------------------------------------------------------------
+while (expression)
+	statement
+--------------------------------------------------------------------------------------------------------------------
+
+Here, statement means a simple statement with a terminating semicolon or a compound statement enclosed in braces; and the expression here means a comparison of values or any other expression, if it is true, the statement is executed once and then the expression is tested again.
+
+(2)Each cycle == iteration.
+
+(3)!When you construct a while loop. it must include something such as break or an if statement that changes the value of the test expression so that the expression eventually becomes false or the loop will never terminate!
+
+2.while: An Entry-Condition Loop
+(1)Conditional == the execution of the statement portion depends on the condition described by the test expression such as (index < 5).
+
+(2)Entry condition == the condition must be met before the body of the loop is entered.
+
+3.Syntax Points
+(1)When using while loop, only the single statement, simple or compound, following the test condition is part of the loop.
+
+(2)Infinite loop == a loop that does not quit without outside intervention.
+
+(3)Null statement == a statement that does nothing. In C, the lone semicolon represents the null statement.
+
+For example, if you want to skip over input to the 1st character that is not whitespace or a digit, we can use a loop like this:
+--------------------------------------------------------------------------------------------------------------------
+while (scanf("%d", &num) == 1)
+	;  /* skip integer input */
+--------------------------------------------------------------------------------------------------------------------
+
+三、Which Is Bigger: Using Relational Operators and Expressions
+1.Relational expression == the expression that make comparisons.
+
+2.Relational operator == the operator that appear in them.
