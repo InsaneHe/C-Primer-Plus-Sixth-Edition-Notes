@@ -7,7 +7,6 @@ Chapter 6 C Control Statements: Looping
 
 (3)Pseudocode == express a program in simple English that parallels the forms of a computer language.
 
-
 二、The while Statement
 1.Terminating a while Loop
 (1)General form of the while loop:
@@ -44,3 +43,51 @@ while (scanf("%d", &num) == 1)
 1.Relational expression == the expression that make comparisons.
 
 2.Relational operator == the operator that appear in them.
+(1)The relational expressions can be used with characters, but they cannot be used to compare strings.
+
+For example:
+--------------------------------------------------------------------------------------------------------------------
+while (ch != '$')
+{
+	count++;
+	scanf("%c", &ch);
+}
+--------------------------------------------------------------------------------------------------------------------
+
+(2)They can be used with floating-point numbers, but you should limit yourself to using only < and > in floating-point comparisons because round-off errors can prevent 2 numbers from being equal even though they should be logically.
+
+2.Relational operator == the operator that appear in them.
+
+3.What Is Truth?
+(1)Recall that an expression in C always has a value. Take a look at the t_and_f.c program which prints the values of 2 relational expressions: one true and one false.
+
+(2)According to the value printed by this program: in C, a true expression has the value 1, and a false expression has the value 0.
+
+4.What Else Is True?
+?If we use a 1 or a 0 as a while statement test expression, can you use other numbers?
+(1)Take a look at the truth.c program: all nonzero values are regarded as true, and only 0 is recognized as false.
+
+5.Troubles with Truth
+(1)Take a look at the trouble.c program in which make a change in the while test condition, replacing "status == 1" with "status = 1". The second statement is an assignment statement. So the while loop is the same as using while (1); which means it never quits. When you enter q, and status is set to 0, but the loop test resets status to 1 and starts another cycle.
+
+(2)?Why does this happen?
+The program keeps looping because the user does not get a chance to type in any more input after entering q. When scanf() fails to read the specified form of input, it leaves the nonconforming input in place to be read the next time, and that "nonconforming input" here is "q". So when scanf() tries to read the q as an integer and fails, it leaves the q there. During the next loop cycle, scanf() attempts to read where it left off the last time: at the q. Once again, scanf() fails to read the q as an integer, so not only does this example set up an infinite loop, it also creates a loop of infinite failure.
+
+(3)Sometimes we might use = for ==
+One way you can use to solve this problem is: if there exists a constant and it needs to be compared to other values, you can put it on the left side of the comparison to help catch errors. Because it is illegal to assign to a constant, so the compiler will tag the use of the assignment operator as a syntax error.
+
+6.The New _Bool Type
+(1)Boolean variables == variables representing true or false.
+
+(2)_Bool type == the C type name for a Boolean variable.
+
+(3)A _Bool variable can only have a value of 1 (true) or 0 (false). If you try to assign a nonzero numeric value to a _Bool variable, the variable is set to 1.
+
+(4)stdbool.h header file == makes bool an alias for _Bool and defines true and false as symbolic constants for the values 1 and 0.
+
+7.Precedence of Relational Operators
+(1)The relational operators are themselves organized into 2 different precedences:
+[1]Higher precedence group: <, <=, >, >=.
+
+[2]Lower precedence group: ==, !=.
+
