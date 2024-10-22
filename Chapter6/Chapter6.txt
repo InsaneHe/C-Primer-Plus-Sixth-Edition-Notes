@@ -91,3 +91,43 @@ One way you can use to solve this problem is: if there exists a constant and it 
 
 [2]Lower precedence group: ==, !=.
 
+8.Indefinite Loops and Counting Loops
+(1)Indefinite loop == we do not know in advance how many times the loop will be executed before the expression becomes false.
+
+(2)Counting loop == they execute a predetermined number of repetitions.
+
+(3)3 actions involved in setting up a loop that is to be repeated a fixed number of times:
+[1]A counter must be initialized.
+
+[2]The counter is compared with some limiting value. (The while loop condition)
+
+[3]The counter is incremented each time the loop is traversed. (The increment operator)
+
+四、The for Loop
+1.The for loop gathers all 3 actions: initializing, testing and updating into one place.
+(1)Take a look at the sweetie2.c program:
+The parentheses following the keyword for contain 3 expressions separated by 2 semicolons. The 1st expression is the initialization which is done just once, when the for loop first starts. The 2nd expression is the test condition which is evaluated before each potential execution of a loop. The 3rd expression is the change or update which is evaluated at the end of each loop.
+
+* Any side effect in a control expression, such as incrementing a variable, take place before the program evaluates another expression.
+
+(2)The 1st line of the for loop tells us immediately all the information about the loop parameters: the starting value of num, the final value of num, and the amount that num increases on each looping.
+
+2.Using for for Flexibility
+(1)The for loop in C has many more possibilities: (P210)
+[1]You can use the decrement operator to count down instead of up.
+
+[2]You can count by twos, tens and so on.
+
+[3]You can count by characters instead of by numbers.
+
+[4]You can test some condition other than the number of iterations.
+
+[5]You can let a quantity increase geometrically instead of arithmetically.
+
+[6]You can use any legal expression you want for the 3rd expression.
+
+[7]You can even leave one or more expressions blank (but do not omit the semicolons).
+
+[8]The 1st expression need not initialize a variable. It could, instead, be a printf() statement of some sort. (The 1st expression is evaluated or executed only once, before any other parts of the loop are executed.)
+
+[9]The parameters of the loop expressions can be altered by actions within the loop.
