@@ -131,3 +131,54 @@ The parentheses following the keyword for contain 3 expressions separated by 2 s
 [8]The 1st expression need not initialize a variable. It could, instead, be a printf() statement of some sort. (The 1st expression is evaluated or executed only once, before any other parts of the loop are executed.)
 
 [9]The parameters of the loop expressions can be altered by actions within the loop.
+
+3.The form of the for statement
+-------------------------------------------------------------------------------------------------------------------
+for (initialize; test; update)
+	statement
+-------------------------------------------------------------------------------------------------------------------
+
+The loop is repeated until test becomes false or zero.
+
+五、More Assignment Operators: +=, -=, *=, /=, %=
+1.Assignment operators of C is "=" and other assignment operators that update variables. Each is used with a variable name to its left and an expression to its right. The variable is assigned a new value equal to its old value adjusted by the value of the expression at the right.
+
+六、The Comma Operator
+1.The comma operator == extends the flexibility of the for loop by enabling you to include more than 1 initialization or update expression in a single for loop specification.
+
+2.Take a look at the postage.c program, it uses the comma operator in the initialize and the update expressions, its presence in the 1st expression causes ounces and cost to be initialized. Its 2nd occurance causes ounces to be increased by 1 and cost to be increased by 20 (that is the value of NEXT_OZ) for each iteration.
+
+3.The comma operator has 2 further properties.
+(1)It guarantees that the expressions it separates are evaluated in a left-to-right order which means the comma is a sequence point, all side effects to the left of the comma take place before the program moves to the right of the comma.
+
+[2]The value of the whole comma expression is the value of the right-hand member.
+
+* Suppose you get careless and use comma notation in writing a number:
+-------------------------------------------------------------------------------------------------------------------
+houseprice = 249,500;
+-------------------------------------------------------------------------------------------------------------------
+
+This is not a syntax error, C interprets this as a comma expression, with houseprice = 249 being the left subexpression and 500 the right one. It means assign 249 to houseprice variable and the "500" part does nothing.
+
+-------------------------------------------------------------------------------------------------------------------
+houseprice = (249,500);
+-------------------------------------------------------------------------------------------------------------------
+
+This assigns 500, the value of the right subexpression, to houseprice.
+
+4.Zeno Meets the for Loop
+(1)Take a look at the zeno.c program:
+It shows that you can use more than 1 comma operator in an expression.
+
+七、An Exit-Condition Loop: do while
+1.Exit-condition loop == the condition is checked after each iteration of the loop, guaranteeing that statements are executed at least once. This variety is called do while loop.
+
+2.Take a look at the do_while.c program and the entry.c program:
+[1]We can conclude that the general form of the do while loop is:
+-------------------------------------------------------------------------------------------------------------------
+do
+	statement
+while (expression);
+-------------------------------------------------------------------------------------------------------------------
+
+!We should restrict the use of do while loops to cases that require at least one iteration!
