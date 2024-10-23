@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <locale.h>
 #define MileToKilo 1.609
 #define GallonToLiter 3.785
 int main(void)
