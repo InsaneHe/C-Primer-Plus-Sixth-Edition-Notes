@@ -182,3 +182,85 @@ while (expression);
 -------------------------------------------------------------------------------------------------------------------
 
 !We should restrict the use of do while loops to cases that require at least one iteration!
+
+3.Avoid a do while structure of the type shown in the following psedocode:
+-------------------------------------------------------------------------------------------------------------------
+do
+{
+	ask user if he or she wants to continue some clever stuff
+} while (answer is yes);
+-------------------------------------------------------------------------------------------------------------------
+
+Here, after the user answers "no", some clever stuff gets done anyway because the test comes too late.
+
+八、Which Loop?
+1.When you decide you need a loop, which one should you use?
+[1]First, decide whether you need an entry-condition loop or an exit-condition loop.
+Usually, your choice will be an entry-condition loop because it is better to look before you leap (or loop) than after, and a program is easier to read if the loop test is found at the beginning of the loop.
+
+2.To make a while like a for, preface it with an initialization and include update statements.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+initialize;
+while (test)
+{
+	body;
+	update;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+is the same as:
+-------------------------------------------------------------------------------------------------------------------
+for (initialize; test; update)
+	body;
+-------------------------------------------------------------------------------------------------------------------
+
+九、Nested Loops
+1.Nested loop == one loop inside another loop.
+
+2.Common use: display data in rows and columns. One loop can handle all the columns in a row, and the second one handles the rows.
+
+Take the rows1.c program as an example:
+
+3.Program Discussion
+(1)Outer loop == the for loop beginning on line 10.
+
+(2)Inner loop == the loop beginning on line 12 which is inside the other loop.
+
+(3)With a nested loop, the inner loop runs through its full range of iterations for each single iteration of the outer loop.
+
+十、Introducing Arrays
+1.Array == a series of values of the same type stored sequentially.
+
+2.Element == the individual item accessed by using an integer index.
+
+3.The numbering of array elements starts with 0 instead of 1.
+
+!One potential pitfall is that, in the interest of speed of execution, C does not check to see whether you use a correct subscript. The compiler does not look for such errors. When the program runs, these statements would place data in locations possibly used for other data!
+
+4.Char array == an array whose elements are assigned char values.
+(1)The contents of a char array form a string if the array contains the null character, \0, which marks the end of the string.
+
+For example:
+character array but not a string:
+|y|o|u| |c|a|n| |s|e|e| |i|t|.|
+
+character array and a string:
+|y|o|u| |c|a|n| |s|e|e| |i|t|.|\0|
+
+5.Subscript / index / offset == the numbers used to identify the array elements.
+(1)They must be integers and the subscripting begins with 0. The array elements are stored next to each other in memory.
+
+6.Using a for Loop with an Array
+Take the scores_in.c program as an example:
+
+(1)A good practice is to have a program repeat or "echo" the values it has just read in which helps ensure the program is processing the data you think it is.
+
+(2)The principle of modularity == a program should be broken into separate units, with each unit having one task to perform which makes a program easier to read and makes it much easier to update or modify a program if different parts of the program are not intermingled.
+
+十一、A Loop Example Using a Function Return Value
+1.To write a function with a return value, do the following:
+(1)When you define a function, state the type of value it returns.
+
+(2)Use the keyword return to indicate the value to be returned.
