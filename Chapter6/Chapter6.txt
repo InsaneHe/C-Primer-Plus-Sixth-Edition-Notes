@@ -264,3 +264,29 @@ Take the scores_in.c program as an example:
 (1)When you define a function, state the type of value it returns.
 
 (2)Use the keyword return to indicate the value to be returned.
+
+2.To declare the function type, preface the function name with the type.
+
+3.The function can return the value of a variable, but it can return the value of expressions, too.
+
+4.Program Discussion
+(1)Take a look at the power.c program:
+[1]Driver == a short program designed to test a function.
+
+For example, the main() program of the power.c program.
+
+(2)The compiler needs to know what kind of value power() returns so that it will know how many bytes of data to expect and how to interpret them. This is why you have to declare the function.
+
+(3)power() is not followed by a semicolon when it appears in a function definition, but is followed by a semicolon when in a function declaration.
+
+5.Using Functions with Return Values
+(1)Declaring the function, calling the function, defining the function, using the return keyword: these are the basic elements in defining and using a function with a return value.
+
+(2)Two questions
+[1]If you are supposed to declare functions before you use their return values, how come you used the return value of scanf() without declaring scanf()?
+The stdio.h header file has function declarations for scanf(), printf() and several other I/O functions.
+
+[2]Why do you have to declare power() separately when your definition of it says it is type double?
+The compiler needs to know what type power() is when it first encounters power() in the program. At this point, the compiler has not yet encountered the definition of power(), so it does not know that the definition says the return type is double. You use a forward declaration to help out the compiler. But if you place the power() function definition ahead of main() in the file, you can omit the forward declaration because the compiler will know all about power() before reaching main(), it is not standard C style though.
+
+* Forward declaration == informs the compiler that the function is defined elsewhere and the type it will return.
