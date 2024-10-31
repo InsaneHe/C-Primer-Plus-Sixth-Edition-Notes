@@ -1,0 +1,57 @@
+Chapter 7 C Control Statements: Branching and Jumps
+一、The if Statement
+1.Jump statement == shift the program flow to another part of a program.
+
+2.Take a look at the colddays.c program:
+(1)What happens if temperature is not less than zero?
+The cold_days++; statement is skipped and the while loop moves on to read the next temperature value.
+
+3.If statement == a branching statement or selection statement.
+(1)The general form:
+--------------------------------------------------------------------------------------------------------------------
+if (expression)
+	statement
+--------------------------------------------------------------------------------------------------------------------
+
+Normally, expression is a relational expression, which compares the magnitude of 2 quantities; the statement portion can be a simple statement as in the example, or it can be a compound statement or block, marked off by braces.
+
+4.Branching statement == provides a junction where the program has to select which of 2 paths to follow.
+
+二、Adding else to the if statement
+1.if else form == choose between 2 statements.
+(1)The general form:
+--------------------------------------------------------------------------------------------------------------------
+if (expression)
+	statement1
+else
+	statement2
+--------------------------------------------------------------------------------------------------------------------
+
+If you want more than one statement between the if and the else, you must use braces to create a single block.
+
+For example:
+--------------------------------------------------------------------------------------------------------------------
+if (x > 0)
+	printf("Incrementing x:\n");
+	x++;
+else  // will generate an error
+	printf("x <= 0 \n");
+--------------------------------------------------------------------------------------------------------------------
+
+The compiler sees the printf() statement as part of the if statement, and it sees the x++; statement as a separate statement, not as part of the if statement. It then sees the else as being unattached to an if, which is an error.
+
+2.Another Example: Introducing getchar() and putchar()
+(1)getchar() and putchar() are functions specifically designed for character-oriented I/O.
+
+(2)getchar() == takes no arguments and returns the next character from input.
+
+(3)putchar() == prints its argument.
+
+(4)These functions deal only with characters, they are faster and more compact than the more general scanf() and printf() functions and they do not need format specifiers.
+
+3.The ctype.h Family of Character Functions
+(1)ctype.h header file == contains the prototype of a standard set of functions for analyzing characters.
+
+(2)See the table 7.1 and the table 7.2 from p253 to p254
+
+4.Multiple Choice else if
