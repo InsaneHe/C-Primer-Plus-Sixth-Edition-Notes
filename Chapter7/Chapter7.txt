@@ -55,3 +55,74 @@ The compiler sees the printf() statement as part of the if statement, and it see
 (2)See the table 7.1 and the table 7.2 from p253 to p254
 
 4.Multiple Choice else if
+(1)The entire if else structure counts as a single statement, so we do not have to enclose the nested if else staements in braces.
+
+5.Pairing else with if
+(1)For example:
+--------------------------------------------------------------------------------------------------------------------
+if (number > 6)
+	if (number < 12)
+		printf("You're close!\n");
+else
+	printf("Sorry, you lose a turn!\n");
+--------------------------------------------------------------------------------------------------------------------
+
+?Does the else go with the 1st if or the 2nd?
+The answer is, the else goes with the 2nd if.
+
+(2)else goes with the most recent if unless braces enclose inner if statements.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+if (condition)
+	do this;
+
+if (condition)
+	do this;
+
+else
+	do this;
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the else goes with the 2nd if. (The compiler ignores indentation.)
+
+-------------------------------------------------------------------------------------------------------------------
+if (condition)
+{
+	do this;
+	if (condition)
+		do this;
+}
+else
+	do this;
+-------------------------------------------------------------------------------------------------------------------
+
+Here, else goes with the 1st if as braces enclose inner if statements.
+
+6.More Nested ifs
+(1)Integer multiplication is faster than extracting a square root.
+
+(2)Flag == a boolean variable whose value is used to represent if a condition is true.
+
+For example, if we want to know if the program flow gets inside the if statement, we can set a variable to some value, say 1, outside the loop and reset the variable to 0 inside the if statement. Then, after the loop is completed, you can check to see whether the variable is still 1. If it is, the if statement was never entered.
+
+[1]Traditionally, C has used the int type for flags, but the new _Bool type matches the requirements perfectly.
+
+三、Let's Get Logical
+1.Principles
+(1)The logical operators have a lower precedence than the relational operators.
+
+(2)Suppose exp1 and exp2 are 2 simple relational expressions.
+[1]exp1 && exp2 is true only if both exp1 and exp2 are true.
+
+[2]exp1 || exp2 is true if either exp1 or exp2 is true or if both are true.
+
+[3]!exp1 is true if exp1 is false, and it's false if exp1 is true.
+
+2.Alternate Spellings: The iso646.h Header File
+(1)iso646.h header file == defines the alternative spellings for the logical operators added by C99 standard.
+
+3.Precedence
+(1)The ! operator has a very high precedence -- higher than multiplication, the same as the increment operators, and just below that of parentheses.
+
+(2)The && operator has higher precedence than ||, and both rank below the relational operators and above assignment in precedence.
