@@ -126,3 +126,87 @@ For example, if we want to know if the program flow gets inside the if statement
 (1)The ! operator has a very high precedence -- higher than multiplication, the same as the increment operators, and just below that of parentheses.
 
 (2)The && operator has higher precedence than ||, and both rank below the relational operators and above assignment in precedence.
+
+4.Order of Evaluation
+(1)C ordinarily does not guarantee which parts of a complex expression are evaluated first.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+apples = (5 + 3) * (9 + 6);
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the expression 5 + 3 might be evaluated before 9 + 6, or it might be evaluated afterward.
+
+(2)One exception to this rule (or lack of rule) is the treatment of logical operators. C guarantees that logical expressions are evaluated from left to right. && and || operators are sequence points, so all side effects take place before a program moves from one operand to the next.
+
+(3)It guarantees that as soon as an element is found that invalidates the expression as a whole, the evaluation stops.
+
+5.Ranges
+For example, you can use the && operator to test for ranges:
+-------------------------------------------------------------------------------------------------------------------
+if (range >= 90 && range <= 100)
+	printf("Good show!\n");
+-------------------------------------------------------------------------------------------------------------------
+
+But remember to avoid:
+-------------------------------------------------------------------------------------------------------------------
+if (90 <= range <= 100)  // No! Don't do it!
+	printf("Good show!\n");
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the problem is that the code is a semantic error instead of a syntax one, so the compiler will NOT catch it. It interprets the condition as: (90 <= range) <= 100. The subexpression 90 <= range either has the value 1 (for true) or 0 (for false). Either value is less than 100, so the whole expression is always true, regardless of the value of range.
+
+四、A Word-Count Program
+1.Word-count program == a program that reads input and reports the number of words it finds.
+
+2.Partial line == a line with characters but no newline.
+
+3.Word == a sequence of characters that contains no whitespace (that is, no spaces, tabs, or newlines).
+
+For example: glymxck and r2d2 are words.
+
+4.ctype.h function isspace() == returns true if its argument is a whitespace character.
+
+5.If you do use a Boolean variable, the usual idiom is to use the value of the variable itself as a test condition.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+if (inword)
+-------------------------------------------------------------------------------------------------------------------
+
+instead of:
+-------------------------------------------------------------------------------------------------------------------
+if (inword == true)
+-------------------------------------------------------------------------------------------------------------------
+
+五、The Conditional Operator: ?:
+1.Conditional expression == a way to express one form of the if else statement and uses the ?: conditional operator which has 3 operands.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+x = (y < 0) ? -y : y;
+-------------------------------------------------------------------------------------------------------------------
+
+Everything between the = and the semicolon is the conditional expression. Here the statement means "If y is less than 0, x = -y; otherwise, x = y."
+
+(1)The general form of the conditional expression:
+-------------------------------------------------------------------------------------------------------------------
+expression1 ? expression2 : expression3
+-------------------------------------------------------------------------------------------------------------------
+
+If expression1 is true (nonzero), the WHOLE conditional expression has the same value as expression2. If expression1 is false (zero), the WHOLE conditional expression has the same value as expression3.
+
+2.unary operator == operator with 1 operand.
+
+3.binary operator == operator with 2 operands.
+
+4.ternary operator == operator with 3 operands.
+
+六、Loop Aids: continue and break
+1.Continue and break statements == enable you to skip part of a loop or even terminate it, depending on tests made in the body of the loop.
+
+2.The continue Statement
+(1)Continue == when encountered, it causes the rest of an iteration to be skipped and the next iteration to be started. If the continue statement is inside nested structures, it affects only the innermost structure containing it.
+
+(2)The ways of avoiding using continue
+[1]Omitting the continue and making the remaining part of the loop an else block.
