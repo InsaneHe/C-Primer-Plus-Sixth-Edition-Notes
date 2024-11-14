@@ -289,3 +289,26 @@ This loop reads characters from input up to and including the newline character 
 3.Multiple Labels
 (1)Take a look at the vowels.c program
 The break statement for case 'U' is not needed, because in its absence, program flow goes to the next statement in the switch, which is the break for the default case.
+
+4.switch and if else
+(1)When to use a switch and when to use the if else statement?
+We cannot use a switch if our choice is based on evaluating a floating-point variable or expression, nor can we use it if a variable must fall into a certain range.
+
+(2)If we can use a switch, our program often runs a little faster and takes less code.
+
+八、The goto Statement
+1.Avoiding goto
+(1)Goto statement == bulwark of the older versions of BASIC and FORTRAN, usually has 2 parts: the goto and a label name.
+[1]Label == named following the same convention used in naming a variable.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+goto part2;
+-------------------------------------------------------------------------------------------------------------------
+
+For this statement to work, the function must contain another statement bearing the part2 label. We do this by beginning a statement with the label name followed by a colon:
+-------------------------------------------------------------------------------------------------------------------
+part2: printf("Refined analysis:\n");
+-------------------------------------------------------------------------------------------------------------------
+
+(2)How to avoid using goto statement? --> P287-289.
