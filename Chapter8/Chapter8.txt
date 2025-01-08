@@ -1,0 +1,251 @@
+Chapter 8 Character Input/Output and Input Validation
+一、Single-Character I/O: getchar() and putchar()
+1.I/O function == transport information to and from your program.
+
+For example: printf(), scanf(), getchar() and putchar().
+
+2.Validating input == determining whether the user has entered input that matches the expectations of a program.
+
+3.Echoing the input == fetch characters from keyboard input and send them to the screen.
+
+二、Buffers
+1.Unbuffered (or direct) input == the characters you type are immediately made available to the writing program.
+
+2.Buffered input == the characters you type are collected and stored in an area of temporary storage called a buffer.
+
+3.When you use buffered input, pressing Enter causes the block of characters you typed to be made available to your program.
+
+4.Why have buffers?
+(1)Less time-consuming to transmit several characters as a block than to send them one by one.
+
+(2)If you mistype, you can use your keyboard correction features to fix your mistake.
+
+5.Unbuffered input --> is desirable for some INTERACTIVE programs.
+
+6.Fully buffered I/O == the buffer is flushed (the contents are sent to their destination) when it is full.
+
+7.Line-buffered I/O == the buffer is flushed whenever a newline character shows up.
+
+8.conio.h header file == supply a special family of functions for unbuffered input.
+
+For example: getche() (for echoed unbuffered input), getch() (for unechoed unbuffered input).
+
+9.Echoed input == the character you type shows onscreen
+
+10.Unechoed input == the keystrokes do not show.
+
+三、Terminating Keyboard Input
+1.Files, Streams, and Keyboard Input
+(1)Take a look at the echo.c program, it halts when # is entered. Ideally, you would like a terminating character that normally does not show up in text.
+
+(2)File == an area of memory in which information is stored.
+
+(3)Low-level I/O == deal with files by using the basic file tools of the host operating system, but influenced by many differences among computer systems.
+
+(4)Standard I/O package == involves creating a standard model and a standard set of I/O functions for dealing with files, differences between systems are handled by specific C implementations so that you deal with a uniform interface.
+
+(5)Stream == an idealized flow of data to which the actual input or output is mapped, which is dealed with when the C program deals with a file.
+
+(6)Stdin == the stream of keyboard input.
+
+(7)Stdout == the stream of output to the screen.
+
+(8)A program reading a file needs a way to detect the end of the file so that it knows where to stop reading. C input functions come equipped with a built-in, end-of-file detector, because keyboard input is treated like a file, you should be able to use that end-of-file detector to terminate keyboard input, too.
+
+2.The End of File
+(1)Normally, one method to detect the end of a file is to place a special character in the file to mark the end.
+
+For example, if the prose is:
+-------------------------------------------------------------------------------------------------------------------
+Ishphat the robot
+slid open the hatch
+and shouted his challenge.
+-------------------------------------------------------------------------------------------------------------------
+
+The prose in a file:
+-------------------------------------------------------------------------------------------------------------------
+Ishphat the robot\n slid open the hatch\n and shouted his challenge.\n^Z
+-------------------------------------------------------------------------------------------------------------------
+
+(2)A second approach is for the operating system to store information on the size of the file.
+
+For example: if a file has 3000 bytes and a program has read 3000 bytes, the program has reached the end.
+
+(3)C handles this variety of methods by having the getchar() function return a special value when the end of a file is reached, regardless of how the operating system actually detects the end of file.
+[1]EOF (end of file) == the name given to this value.
+
+For example: the return value for getchar() when it detects an end of file is EOF. The scanf() function also returns EOF on detecting the end of a file.
+
+Typically, EOF is defined in the stdio.h file as follows:
+-------------------------------------------------------------------------------------------------------------------
+#define EOF (-1)
+-------------------------------------------------------------------------------------------------------------------
+
+?Why -1?
+Normally, getchar() returns a value in the range 0 through 127, because those are values corresponding to the standard character set, but it might return values from 0 through 255 if the system recognizes an extended character set. In either case, the value -1 does not correspond to any character, so it can be used to signal the end of a file.
+
+[2]Command-line environment == the user interacts with a program through keystrokes, and the operating system generates the EOF signal.
+
+四、Redirection and Files
+1.Input and output == involve functions, data, and devices.
+
+2.By default, a C program using the standard I/O package looks to the standard input as its source for input.
+
+3.There are 2 ways to get a program to work with files.
+(1)Explicitly use special functions that open files, close files, read files, write in files, and so forth.
+
+(2)Use a program designed to work with a keyboard and screen, but to redirect input and output along different channels --> to and from files, for example. (reassign the stdin stream to a file.)
+[1]This approach (redirection) is more limited in some respects than the first, but it is much simpler to use, and it allows you to gain familiarity with common file-processing techniques.
+
+[2]One major problem with redirection is that it is associated with the operating system, not C.
+
+1.Unix, Linux, and Windows Command Prompt Redirection
+(1)Redirecting Input
+[1]Suppose you have compiled the echo_eof.c program and placed the executable version in a file called echo_eof (or echo_eof.exe on a Windows system). To run the program, type the executable file's name:
+-------------------------------------------------------------------------------------------------------------------
+echo_eof
+-------------------------------------------------------------------------------------------------------------------
+
+[2]Text file == one containing text, that is, data stored as human-readable characters.
+
+[3]A file containing machine language instructions is not a text file.
+
+[4]The < symbol == a Unix and Linux and DOS/Windows redirection operator, causes the words file to be associated with the stdin stream, channeling the file contents into the echo_eof program.
+
+[5]C puts files and I/O devices on the same footing, so the file is now the I/O device.
+
+[6]With Unix, Linux, and Windows Command Prompt, the spaces on either side of the < are optional.
+
+(2)Redirecting Output
+[1]The > == a second redirection operator, which causes a new file to be created for your use, and then it redirects the output of another file (that is, a copy of the characters you type) to that file. (The redirection reassigns stdout from the display device (your screen) to the file created instead. If you already have a file with the name, normally it would be erased and then replaced by the new one.)
+
+(3)Combined Redirection
+[1]Suppose you want to make a copy of the file mywords and call it savewords, we can issue this command:
+-------------------------------------------------------------------------------------------------------------------
+echo_eof > savewords < mywords
+-------------------------------------------------------------------------------------------------------------------
+
+!Do not use the same file for both input and output to the same command.!
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+echo_eof < mywords > mywords....<--WRONG
+-------------------------------------------------------------------------------------------------------------------
+
+The reason is that > mywords causes the original mywords to be truncated to ZERO LENGTH before it is ever used as input.
+
+[2]The rules governing the use of the 2 redirection operators (< and >) with Unix, Linux, or Windows/DOS:
+{1}A redirection operator connects an executable program (including standard operating system commands) with a data file. It cannot be used to connect one data file to another, nor can it be used to connect one program to another program.
+
+{2}Input cannot be taken from more than one file, nor can output be directed to more than one file by using these operators.
+
+{3}Normally, spaces between the names and operators are optional, except occasionally when some characters with special meaning to the Unix shell or Linux shell or the Windows Command Prompt mode are used. We could, for example, have used echo_eof<words.
+
+[3]>> operator == used in Unix, Linux, and Windows/DOS, which enables you to add data to the end of an existing file.
+
+[4]| operator == the pipe operator, which enables you to connect the output of one program to the input of a second program.
+
+五、Creating a Friendlier User Interface
+1.Working with Buffered Input
+(1)Buffered input == often a convenience to the user, providing an opportunity to edit input before sending it on to a program.
+
+(2)The problem is that buffered input requires you to press the Enter key to transmit your input which also transmits a newline character that the program must handle.
+
+(3)Take a look at the guess.c program, it makes 2 guesses every time you enter n because it reads the n response as a denial that the number is 1 and then reads the newline character as a denial that the number is 2.
+
+One solution is to use a while loop to discard the rest of the input line, including the newline character.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+while (getchar() != 'y')  /* get response, compare to y */
+{
+	printf("Well, then, is it %d?\n", ++guess);
+	while (getchar() != '\n')
+		continue;  /* skip rest of input line */
+}
+-------------------------------------------------------------------------------------------------------------------
+
+That also has a problem that anything different from 'y' will be treated as a 'n', a solution is to use an if statement to screen out other responses.
+
+For example:
+First, add a char variable to store the response:
+-------------------------------------------------------------------------------------------------------------------
+char response;
+-------------------------------------------------------------------------------------------------------------------
+
+Then change the loop to this:
+-------------------------------------------------------------------------------------------------------------------
+while ((response = getchar()) != 'y')  /* get response */
+{
+	if (response == 'n')
+		printf("Well, then, is it %d?\n", ++guess);
+	else
+		printf("Sorry, I understand only y or n.\n");
+	while (getchar() != '\n')
+		continue;  /* skip rest of input line */
+}
+-------------------------------------------------------------------------------------------------------------------
+
+2.Mixing Numeric and Character Input
+(1)Suppose your program requires both character input using getchar() and numeric input using scanf(). Each of them does its job well but the 2 DO NOT mix together well. Because getchar() reads every character including spaces, tabs and newlines, whereas scanf(), when reading numbers, skips over spaces, tabs and newlines.
+
+(2)Take a look at the showchar1.c program which reads in a character and the two numbers as input, then prints the character using the number of rows and columns specified in the input.
+
+[1]Some compilers might warn about the conversion that the program passes the character as type char to the display() function but char is smaller than int. We can eliminate this warning by using a typecast:
+-------------------------------------------------------------------------------------------------------------------
+display(char(ch), rows, cols);
+-------------------------------------------------------------------------------------------------------------------
+
+However, the program prompts you to enter second set of data and quits before you have a chance to respond because of the newline character. When we enter the first input line, the newline character was entered at the end of it, the getchar() does not skip over newline characters, so this newline character is read by getchar() during the next cycle of the loop before you have a chance to enter anything else. Then it was assigned to ch, it being the newline character is the condition that the loop terminates.
+
+(3)Take a look at the showchar2.c program which skips over any newlines or spaces between the last number typed for one cycle of input and the character typed at the beginning of the next line. It can also be terminated at the scanf() stage in addition to the getchar() test.
+
+六、Input Validation
+1.We can often anticipate likely input errors, and, with some extra programming effort, have a program detect and work around them.
+
+2.Suppose we have a loop that processes nonnegative numbers, one kind of error the user can make is to enter a negative number. We can use a relational expression to test for that:
+-------------------------------------------------------------------------------------------------------------------
+long n;
+scanf("%ld", &n);  // get first value
+while (n >= 0)  // detect out-of-range value
+{
+	// process n
+	scanf("%ld", &n);  // get next value
+}
+-------------------------------------------------------------------------------------------------------------------
+
+Another potential pitfall is that the user might enter the wrong type of value, such as the character q. A way to detect the misuse of such kind is to check the return value of scanf():
+-------------------------------------------------------------------------------------------------------------------
+scanf("%ld", &n) == 1
+-------------------------------------------------------------------------------------------------------------------
+
+The sentence above is true only if the user inputs an integer, and the original program changes to this:
+-------------------------------------------------------------------------------------------------------------------
+long n;
+while (scanf("%ld", &n) == 1 && n >= 0)
+{
+	// process n
+}
+-------------------------------------------------------------------------------------------------------------------
+
+The last one terminates input if the user enters the wrong type of value, we can choose to make the program a little more user friendly and give the user the opportunity to try to enter the correct one. We need to dispose of the input that caused scanf() to fail in the first place, for scanf() leaves the bad input in the input queue.
+
+-------------------------------------------------------------------------------------------------------------------
+long get_long(void)
+{
+	long input;
+	char ch;
+
+	while (scanf("%ld", &input) != 1)
+	{
+		while ((ch = getchar()) != '\n')
+			putchar(ch);  // dispose of bad input
+		printf(" is not an integer.\nPlease enter an ");
+		printf("integer value, such as 25, -178, or 3: ");
+	}
+
+	return input;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+It attempts to read an int value into the variable input. If it fails to do so, the function enters the body of the outer while loop. The inner while loop then reads the offending input character-by-character.
