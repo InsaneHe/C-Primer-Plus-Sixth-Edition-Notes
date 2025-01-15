@@ -1,0 +1,327 @@
+Chapter 9 Functions
+一、Reviewing Functions
+1.Creating and Using a Simple Function
+(1)Function == a self-contained unit of program code designed to accomplish a particular task, and both produces actions and provides values.
+
+(2)Synrax rules == define the structure of a function and how it can be used.
+
+(3)Descriptive function names make it clear what the program does and how it is organized.
+
+(4)Take a look at the lethead1.c program:
+It consists of 2 functions: main() and starbar().
+
+2.Analyzing the Program
+(1)There are several major points to note about this program:
+[1]It uses the starbar identifier in 3 separate contexts: a function prototype, a function call and a function definition.
+{1}Function prototype == tells the compiler what sort of the function is.
+
+{2}Function call == causes the function to be executed.
+
+{3}Function definition == specifies exactly what the function does.
+
+[2]Like variables, functions have types. Any program that uses a function should declare the type for that function before it is used.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void starbar(void);
+-------------------------------------------------------------------------------------------------------------------
+
+This ANSI C prototype precedes the main() function definition. The parentheses indicate that starbar is a function name, the 1st void is a function type; the void type indicates that the function does not return a value. The 2nd void (the one in the parentheses) indicates that the function takes no arguments. The semicolon indicates that you are declaring the function instead of defining it.
+
+!For compilers that do not recognize ANSI C prototyping, just declare the type!
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void starbar();
+-------------------------------------------------------------------------------------------------------------------
+
+!Some very old compilers do not recognize the void type, then use type int for function that do not have return values.!
+
+[3]Signature == the type of value a function returns and the types of arguments it expects specified by the prototype of the function.
+
+[4]The program places the starbar() prototype before main(), and you can also go inside main(), at the same location you would place any variable declarations, either way is fine.
+
+[5]The program calls the function from main() by using its name followed by parentheses and a semicolon: starbar();
+whenever the computer reaches this statement, it looks for the starbar() function and follows the instructions there, when finished, the computer returns to the next line of the calling function. (main() in this case.)
+
+[6]The program follows the same form in defining starbar() as it does in defining main(). It starts with the type, name, and parentheses. Then it supplies the opening brace, a declaration of variables used, the defining statements of the function, and then the closing brace. If the function, as in this instance of starbar() is not followed by a semicolon, it tells the compiler that you are defining starbar() instead of calling or prototyping it.
+
+[7]The program includes starbar() and main() in the same file, we can also use 2 separate files to place these 2 functions.
+
+[8]Local variable == it is known only to the function where the variable exists.
+For example:
+The varibale count in starbar() is a local variable and it is known only to starbar(), you can use the name count in other functions, including main, and there will be no conflict.
+
+*A function does not have any input because it does not need to use any information from the calling function, it does not provide (or return) any information to main(), so it does not have any return value, either. In short, the function does not require any communication with the calling function.*
+
+3.Function Arguments
+(1)Take a look at the lethead2.c program:
+To make the text of the letterhead shown earlier centered, we can print the correct number of leading spaces before printing the text. So we create a new function show_n_char() to displaying a character n times. And instead of using built-in values for the display character and number of repetitions, show_n_char() will use function arguments to convey those values.
+
+4.Defining a Function with an Argument: Formal Parameters
+(1)The ANSI C function header of the function definition looks like this:
+-------------------------------------------------------------------------------------------------------------------
+void show_n_char(char ch, int num)
+-------------------------------------------------------------------------------------------------------------------
+
+It informs the compiler that show_n_char() uses 2 arguments called ch and num, and ch is type char, num is type int. Both of them are called formal arguments or formal parameters.
+
+(2)Formal argument == local variables private to the function. And these variables will be assigned values each time the function is called.
+
+(3)The ANSI C form requires that each variable be preceded by its type, which means that you cannot use a list of variables of the same type like regular declarations.
+-------------------------------------------------------------------------------------------------------------------
+void dibs(int x, y, z)  /* invalid */
+void dibs(int x, int y, int z)  /* valid */
+-------------------------------------------------------------------------------------------------------------------
+
+(4)ANSI C also recognizes the pre-ANSI C form but characterizes it as obsolescent.
+-------------------------------------------------------------------------------------------------------------------
+void show_n_char(ch, num)
+char ch;
+int num;
+-------------------------------------------------------------------------------------------------------------------
+
+5.Prototyping a Function with Arguments
+(1)Using an ANSI C prototype to declare the function before it is used.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void show_n_char(char ch, int num);
+-------------------------------------------------------------------------------------------------------------------
+
+(2)When a function takes arguments, the prototype indicates their number and type by using a comma-separated list of the types. You can also omit variable names in the prototype if you like.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void show_n_char(char, int);
+-------------------------------------------------------------------------------------------------------------------
+
+(3)Using variable names in a prototype does not actually create variables. It merely clarifies the fact that char means a char variable, and so on.
+
+6.Calling a Function with an Argument: Actual Arguments
+(1)Actual argument == the particular value assigned to the function variable by the calling function.
+
+*The formal parameter is a variable in the called function.*
+
+7.The Black-Box Viewpoint
+(1)According to the black-box viewpoint, the input of the show_n_char() is the character to be displayed and the number of spaces to be skipped, the resulting action is printing the character the specified number of times.
+
+(2)ch, num and count are local variables private to the show_n_char() fucntion, so if you were to use variables with the same names in main(), they would be separate, independent variables.
+For example: if main() had a count variable, changing its value would not change the value of count in show_n_char(), and vice versa.
+
+8.Returing a Value from a Function with return
+(1)Take a look at the lesser.c program:
+If we want to send information from the called function to the calling function, we use the fucntion return value.
+
+(2)Driver == the program designed to test functions by creating a simple main() whose sole purpose is to check to see whether the function tested works.
+
+(3)The variable min is private to imin(), but the value of min is communicated back to the calling function with return. We can assign the value of min to lesser like the following:
+-------------------------------------------------------------------------------------------------------------------
+lesser = imin(n, m);
+-------------------------------------------------------------------------------------------------------------------
+
+But we cannot say the following instead:
+-------------------------------------------------------------------------------------------------------------------
+imin(n, m);
+lesser = min;
+-------------------------------------------------------------------------------------------------------------------
+
+Because the calling function does not even know that min exists. (imin()'s variables are local to imin().)
+
+(4)Not only can the returned value be assigned to a variable, it can also be used as part of an expression.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+answer = 2 * imin(z, zstar) + 25;
+printf("%d\n", imin(-32 + answer, LIMIT));
+-------------------------------------------------------------------------------------------------------------------
+
+(5)The return value can be supplied by any expression, not just a variable.
+-------------------------------------------------------------------------------------------------------------------
+/* minimum value function, second version */
+imin(int n, int m)
+{
+	return (n < m) ? n : m;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+(6)If the function returns a type different from the declared type, the actual return value is what you would get if you assigned the indicated return value to a variable of the declared return type.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int what_if(int n)
+{
+	double z = 100.0 / (double) n;
+	return z;  // what happens?
+}
+-------------------------------------------------------------------------------------------------------------------
+
+The net effect of the above program would be the same as if you assigned the value of z to an int variable and then returned that value.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+result = what_if(64);
+-------------------------------------------------------------------------------------------------------------------
+
+Then z is assigned 1.5625. The return statement, however, returns the int value 1.
+
+(7)Using return has another effect. It terminates the function and returns control to the next statement in the calling function even if the return statement is not the last in the function.
+
+(8)We can also use a statement like the following:
+-------------------------------------------------------------------------------------------------------------------
+return;
+-------------------------------------------------------------------------------------------------------------------
+
+It causes the function to terminate and return control to the calling function. Because no expression follows return, no value is returned, and this form should be used only in a type void function.
+
+9.Function Types
+(1)Functions should be declared by type.
+
+(2)A function with a return value -> declared the same type as the return value.
+
+(3)Functions with no return value -> declared as type void.
+
+(4)If no type is given for a function, older version of C assume that the function is type int. But the C99 standard drops support for this implicit assumption of type int.
+
+(5)A program needs to know the function type before the function is used for the 1st time.
+[1]One way to accomplish this is to place the complete function definition ahead of its 1st use, but it can make the program harder to read, also, the functions might be part of the C library or in some other file.
+
+[2]Function declarations can also be placed inside the function.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+#include <stdio.h>
+int main(void)
+{
+	int imin(int, int)  /* imin() declaration */
+	int evil1, evil2, lesser;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+(6)Our chief concern should be that the function declaration appears before the function is used.
+
+(7)In ANSI C standard library, functions are grouped into families, each having its own header file. These header files contain, among other things, the declarations for the functions in the family.
+
+二、ANSI C Function Prototyping
+1.The Problem
+(1)The traditional, pre-ANSI C scheme for declaring functions was deficient in that it declared a function's return type but not its arguments.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int imin();
+-------------------------------------------------------------------------------------------------------------------
+
+It says nothing about the number or type of imin()'s arguments. So if you use imin() with the wrong number or type of arguments, the compiler DOES NOT catch the error.
+
+(2)Take a look at the misuse.c program:
+It declares imax() the old-fashioned way and then uses imax() incorrectly.
+
+[1]Stack == A temporary storage area in which the calling function places its arguments.
+
+[2]The mechanics may differ among systems, but what goes on with a PC or VAX is the calling function places its arguments in the stack and the called function reads those arguments off the stack.
+
+[3]These 2 processes are NOT coordinated with one another.
+
+[4]The calling function decides which type to pass based on the actual arguments in the call, and the called function reads values based on the types of its formal arguments.
+
+[5]The call imax(3) (calling function) places 1 integer on the stack, when the imax() function (called function) starts up, it reads 2 integers off the stack. Only 1 was actually placed on the stack, so the 2nd value read is whatever value happened to be sitting in the stack at the time.
+
+[6]The 2nd time the example uses imax(), it passes float values to imax(). This places 2 double values on the stack. (A float is promoted to double when passed as an argument.) On our system, that is 2 64-bit values, so 128 bits of data are placed on the stack. When imax() reads 2 ints from the stack, it reads the 1st 64 bits on the stack because on our system, each int is 32 bits. These bits happened to correspond to 2 integer values, the larger of which was 3886.
+
+2.The ANSI C Solution
+(1)The ANSI C standard's solution to the problems of mismatched arguments is to permit the function declaration to declare the variable types, too.
+
+(2)Function prototype == a declaration that states the return type, the number of arguments, and the types of those arguments.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int imax(int, int);
+-------------------------------------------------------------------------------------------------------------------
+
+It uses a comma-separated list of types, or we can also use this:
+-------------------------------------------------------------------------------------------------------------------
+int imax(int a, int b);
+-------------------------------------------------------------------------------------------------------------------
+
+It adds variable names to the types. (The variable names are dummy names and do not have to match the names used in the function definition.)
+
+(3)If there is a type mismatch and if both types are numbers, the compiler converts the values of the actual arguments to the same type as the formal arguments.
+
+(4)Take a look at the proto.c program:
+When we tried to compile this program, our compiler gives an error message stating that the call to imax() has too few parameters.
+
+(5)If we replace imax(3) with imax(3, 5) and tried compilation again, there were no error messages, and we ran the program.
+
+(6)The 3.0 and 5.0 of the 2nd call are converted to 3 and 5 so that the function can handle the input properly.
+
+(7)The difference between an error and a warning:
+[1]Error == prevents compilation.
+
+[2]Warning == permits compilation.
+
+3.No Arguments and Unspecified Arguments
+(1)Suppose we give a prototype like this:
+-------------------------------------------------------------------------------------------------------------------
+void print_name();
+-------------------------------------------------------------------------------------------------------------------
+
+An ANSI C compiler will assume that you have decided to forego function prototyping, and it will not check arguments.
+
+(2)We can use the void keyword within the parentheses.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void print_name(void);
+-------------------------------------------------------------------------------------------------------------------
+
+This time, ANSI C interprets that print_name() takes no arguments and then CHECKS to see that you do not use arguments when calling this function.
+
+(3)Some functions such as printf() take a variable number of arguments. ANSI C allows partial prototyping for such cases.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int printf(const char *, ...);
+-------------------------------------------------------------------------------------------------------------------
+
+We can use the above prototype for printf().
+
+(4)The C library, through the stdarg.h header file, provides a standard way for defining a function with a variable number of parameters.
+
+4.Hooray for Prototypes
+(1)We do not have to use prototypes, instead, we can use the old type of function declaration (the one showing no parameters), or we can omit a prototype yet retain the advantages of it by placing the entire function definition before the 1st use. Then the definition acts as its own prototype.
+
+三、Recursion
+1.Recursion Revealed
+
+
+2.Recursion Fundamentals
+
+
+3.Tail Recursion
+
+
+4.Recursion and Reversal
+
+
+5.Recursion Pros and Cons
+
+
+四、Compiling Programs with Two or More Source Code Files
+1.Unix
+
+
+2.Linux
+
+
+3.DOS Command-Line Compilers
+
+
+4.Windows and Apple IDE Compilers
+
+
+5.Using Header Files
+
+
+五、Finding Addresses: The & Operator
+
+
+六、Altering Variables in the Calling Function
+
+
+七、Pointers: A First Look
+1.The Indirection Operator: *
+
+
+2.Declaring Pointers
+
+
+3.Using Pointers to Communicate Between Functions
+
