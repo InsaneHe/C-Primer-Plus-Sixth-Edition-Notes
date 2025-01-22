@@ -280,35 +280,131 @@ We can use the above prototype for printf().
 
 三、Recursion
 1.Recursion Revealed
+(1)Recursion == a function calls itself.
 
+(2)A function that calls itself tends to do indefinitely unless the programming includes a conditional test to terminate recursion.
+
+(3)Recursion often can be used where loops can be used, but recursive solutions tend to be more elegant and less efficient than loop solutions.
+
+(4)Take a look at the recur.c program:
+[1]The "up_and_down(1)" is the 1st level of recursion. After that, the "up_and_down(n+1)" in up_and_down() function becomes "up_and_down(2)" and it is the 2nd level of recursion. Then the 2nd level of recursion calls "up_and_down(n+1)" in up_and_down() function again, it then becomes "up_and_down(3)" which is the 3rd level of recursion and so on.
+
+[2]When Level 4 is reached, n is 4, so the if test fails. The up_and_down() function is not called again. Instead, the Level 4 call proceeds to print statement #2, which prints LEVEL 4, because n is 4. Then it reaches the return statement. At this point, the Level 4 call ends, and control passes back to the function that called it (the Level 3 call). The last statement executed in the Level 3 call was the call to Level 4 in the if statement. Therefore, Level 3 resumes with the following statement, which is print statement #2. This causes LEVEL 3 to be printed. Then Level 3 ends, passing control to Level 2, which prints LEVEL 2, and so on.
+
+[3]!Each level of recursion uses its own private n variable. The critical point is that the address on the Level 1 line is the same as the address on the LEVEL 1 line, and so on.!
+
+[4]The process of this program is like this:
+You have a chain of function calls: fun1 -> fun2 -> fun3 -> fun4 -> fun3 -> fun2 -> fun1.
+
+[5]The recursive case works the same, expect that fun1(), fun2(), fun3() and fun4() are the same function.
 
 2.Recursion Fundamentals
+(1)There are some basic points about recursion:
+[1]Each level of function call has its own variables.
+For example:
+In the recur.c program, it creates 4 separate variables, each called n, but each having a distinct value. When the program finally returned to the 1st-level call of up_and_down(), the original n still had the value 1 it started with.
 
+[2]Each function call is balanced with a return. When program flow reaches the return at the end of the last recursion level, control passes to the previous recursion level. The program does not jump all the way back to the original call in main(). Instead, the program must move back through each recursion level, returning from one level of up_and_down() to the level of up_and_down() that called it.
+
+[3]Statements in a recursive function that come before the recursive call are executed in the same order that the functions are called.
+
+[4]Statements in a recursive function that come after the recursive call are executed in the opposite order from which the functions are called. And this feature of recursion is useful for programming problems involving reversals of order.
+
+[5]Although each level of recursion has its own set of variables, the code itself is not dupplicated. Sometimes recursion can be used instead of loops, and vice versa.
+
+[6]It is vital that a recursive function contain something to halt the sequence of recursive calls. Typically, a recursive function uses an if test, or equivalent, to terminate recursion when a function parameter reaches a particular value.
 
 3.Tail Recursion
+(1)Tail recursion == end recursion, the recursive call comes at the end, just before the return statement.
 
+(2)Take a look at the factor.c program:
+[1]The recursive version of the program produces the same output as the loop version. Although the recursive call to rfact() is not the last line in the function, it is the last statement executed when n > 0, so it is tail recursion.
+
+(3)Normally, the loop is the better choice.
+[1]Each recursive call places a new set of variables on the stack and space restrictions in the stack can limit the number of recursive calls.
+
+[2]Recursion is slower because each function call takes time.
 
 4.Recursion and Reversal
+(1)Take a look at the binary.c program:
+This program is designed to print the binary equivalent of an integer.
+[1]Binary notation == represent numbers in terms of powers of 2.
 
+[2]Binary numbers use only the digits 0 and 1.
+
+[3]Odd numbers must have a binary representation ending in 1, even numbers end in 0. In general, if n is a number, the final digit is n % 2, so the 1st digit you find is the last digit you want to print.
+
+[4]We can use a recursive function in which n % 2 is calculated before the recursive call but in which it is printed after the recursive call. That way, the 1st value calculated is the last value printed. To get the next digit, divide the original number by 2. This is the binary equivalent of moving the decimal point one place to the left so that you can examine the next binary digit. If this value is even, the next binary digit is 0. If it is odd, the binary digit is 1.
+
+[5]It stops when the result of dividing by 2 is less than 2 because as long as it is 2 or greater, there is one more binary digit. Each division by 2 lops off one more binary digit until you reach the end.
 
 5.Recursion Pros and Cons
+(1)Good point of recursion:
+[1]Recursion offers the simplest solution to some programming problems.
 
+(2)Bad points of recursion:
+[1]Some recursive algorithms can rapidly exhaust a computer's memory resources.
+
+[2]Recursion can be difficult to document and maintain.
+
+(3)Fibonacci numbers == the 1st Fibonacci number is 1, the 2nd Fibonacci number is 1, and each subsequent Fibonacci number is the sum of the preceding 2.
+
+(4)Double recursion == the function calls itself twice.
+
+(5)Each level requires twice the number of variables as the preceding level, and the number of variables grows exponentially! Exponential growth soon leads to the computer requiring an enormous amount of memory, most likely causing the program to crash.
 
 四、Compiling Programs with Two or More Source Code Files
 1.Unix
+(1)Assuming that the Unix C compiler cc has been installed.
 
+(2)Suppose that file1.c and file2.c are 2 files containing C functions. Then the following command will compile both files and produce an executable file called a.out:
+-------------------------------------------------------------------------------------------------------------------
+cc file1.c file2.c
+-------------------------------------------------------------------------------------------------------------------
+
+In addition, 2 object files called file1.o and file2.o are produced. If you later change file1.c but not file2.c, you can compile the 1st and combine it with the object code version of the 2nd file by using this command:
+-------------------------------------------------------------------------------------------------------------------
+cc file1.c file2.c
+-------------------------------------------------------------------------------------------------------------------
+
+(3)make command == automate management of multifile programs.
 
 2.Linux
+(1)Assuming the Linux system has the GNU C compiler GCC installed.
 
+(2)Suppose that file1.c and file2.c are 2 files containing C functions. Then the following command will compile both files and produce an executable file called a.out:
+-------------------------------------------------------------------------------------------------------------------
+gcc file1.c file2.c
+-------------------------------------------------------------------------------------------------------------------
+
+In addition, 2 object files called file1.o and file2.o are produced. If you later change file1.c but bot file2.c, you can compile the 1st and combine it with the object code version of the 2nd file by using this command:
+-------------------------------------------------------------------------------------------------------------------
+gcc file1.c file2.o
+-------------------------------------------------------------------------------------------------------------------
 
 3.DOS Command-Line Compilers
+(1)Most DOS command-line compilers work similarly to the Unix cc command, but using a different name.
 
+(2)Difference
+[1]Object files wind up with an .obj extension instead of an .o extension. Some compilers produce intermediate files in assembly language or in some other special code, instead of object code files.
 
 4.Windows and Apple IDE Compilers
+(1)Integrated development environment compilers for Windows and Macintosh are PROJECT ORIENTED.
 
+(2)Project == describes the resources a particular program uses, the resources include your source code files.
+
+(3)If you have been using one of these compilers, you have probably had to create projects to run one-file programs. For multiple-file programs, find the menu command that lets you add a source code file to a project.
+
+(4)Make sure all your souce code files (the ones with the .c extension) are listed as part of the project. With many IDEs, you do not list your header files. However, with Xcode, you do add header files to the project.
 
 5.Using Header Files
+(1)If you put main() in one file and your function definitions in a 2nd file, the 1st file still needs the function prototypes. You can store the function prototypes in a header file.
 
+(2)Also, you will often use the C preprocessor to define constants used in a program. Such definitions hold only for the file containing the #define directives. If you place the functions of a program into separate files, you also have to make the #define directives available to EACH file.
+
+(3)A better solution is to place the #define directives in a header file and then use the #include directive in each source code file.
+
+(4)Take a look at the usehotel1.c and hotel1.c programs and you will learn how to include the functions and #define directives.
 
 五、Finding Addresses: The & Operator
 
