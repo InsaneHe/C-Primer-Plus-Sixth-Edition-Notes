@@ -404,20 +404,113 @@ gcc file1.c file2.o
 
 (3)A better solution is to place the #define directives in a header file and then use the #include directive in each source code file.
 
-(4)Take a look at the usehotel1.c and hotel1.c programs and you will learn how to include the functions and #define directives.
+(4)Take a look at the usehotel1.c and hotel1.c programs and the hotel.h header file and you will learn how to include the functions and #define directives.
 
 五、Finding Addresses: The & Operator
+1.Pointer == a variable used to store an address.
 
+2.Unary & operator == give you the address where a variable is stored.
+
+3.Address == a location in memory.
+
+4.Take a look at the loccheck.c program:
+(1)The way that %p represents addresses varies among implementations. Many implementations display the address in hexadecimal form.
+
+(2)?What does the output show?
+[1]The 2 poohs have different addresses. The same is true for the 2 bahs. That means the computer considers them to be 4 separate variables.
+
+[2]The call mikado(pooh) did convey the value (2) of the actual argument (pooh of main()) to the formal argument (bah of mikado()). Note that just the value was transferred. The 2 variables involved (pooh of main() and bah of mikado()) retain their distinct identities.
 
 六、Altering Variables in the Calling Function
+1.Sometimes you want one function to make changes in the variables of a different function.
 
+2.Take a look at the swap1.c and swap2.c programs:
+There is nothing wrong with interchange(), it does swap the values of u and v. The problem is in communicating the results to main(). As we point out, interchange() uses different variables from main(), so interchanging the values of u and v has NO effect on x and y! We can finish interchange() with the line
+-------------------------------------------------------------------------------------------------------------------
+return(u);
+-------------------------------------------------------------------------------------------------------------------
+
+and change the call in main() to this:
+-------------------------------------------------------------------------------------------------------------------
+x = interchange(x, y);
+-------------------------------------------------------------------------------------------------------------------
+
+This change gives x its new value, but it leaves y in the cold. With return, you can send just 1 value back to the calling function, but you need to communicate 2 values. But we need to do this by using pointers.
 
 七、Pointers: A First Look
 1.The Indirection Operator: *
+(1)Pointer == a variable (or, more generally, a data object) whose value is a memory address, which means the pointer variable has an address as a value.
 
+(2)For example:
+-------------------------------------------------------------------------------------------------------------------
+ptr = &pooh;  // assign pooh's address to ptr
+-------------------------------------------------------------------------------------------------------------------
+
+The difference between ptr and &pooh is that ptr is a variable, and &pooh is a constant. Or, ptr is a modifiable lvalue and &pooh is an rvalue.
+
+(3)To create a pointer variable, you need to be able to declare this type, and you need to use a new operator.
+
+(4)Indirection operator * == dereferencing operator, used to find the value stored in variable.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+val = *ptr;  // finding the value ptr points to, and "ptr" is the name of the pointer
+-------------------------------------------------------------------------------------------------------------------
+
+!Do not confuse the unary indirection operator with the binary * operator of multiplication: they have the same symbol but different syntax!
+
+(5)The statement ptr = &bah; and val = *ptr; taken together amount to the following statement: val = bah;
 
 2.Declaring Pointers
+(1)How to declare pointers?
+We need to specify the kind of variable to which the pointer points because different variable types take up different amounts of storage, and some pointer operations require knowledge of that storage size. Also, the program has to know what kind of data is stored at the address.
 
+(2)We should declare pointers like this:
+-------------------------------------------------------------------------------------------------------------------
+int * pi;  // pi is a pointer to an integer variable
+char * pc;  // pc is a pointer to a character variable
+float * pf, * pg;  // pf, pg are pointers to float variables
+-------------------------------------------------------------------------------------------------------------------
+
+That means: the type specification identifies the type of variable pointed to, and the asterisk (*) identifies the variable itself as a pointer.
+
+(3)The space between the * and the pointer name is optional. Often, programmers use the space in a declaration and omit it when dereferencing a variable.
 
 3.Using Pointers to Communicate Between Functions
+(1)Take a look at the swap3.c program:
+After using the pointers and interchange them, we actually get the values exchanged by exchanging their pointers, which means that the function interchange() transmits their addresses instead of transmitting the values of x and y.
 
+(2)u has the value &x (the address of x), v has the value &y (the address of y); which means that *u gives you the value of x and *v gives you the value of y.
+
+(3)We can omit the variable names in the ANSI C prototype. Then the prototype declaration looks like this:
+-------------------------------------------------------------------------------------------------------------------
+void interchange(int *, int *);
+-------------------------------------------------------------------------------------------------------------------
+
+(4)In general, we can communicate 2 kinds of information about a variable to a function.
+[1]If we use a call of the form:
+-------------------------------------------------------------------------------------------------------------------
+function1(x);
+-------------------------------------------------------------------------------------------------------------------
+
+We transmit the value of x.
+
+[2]If we use a call of the form:
+-------------------------------------------------------------------------------------------------------------------
+function2(&x);
+-------------------------------------------------------------------------------------------------------------------
+
+We transmit the address of x.
+
+!The 1st form requires that the function definition includes a formal argument of the same type as x!
+-------------------------------------------------------------------------------------------------------------------
+int function1(int num)
+-------------------------------------------------------------------------------------------------------------------
+
+!The 2nd form requires the function definition to include a formal parameter that is a pointer to the right type!
+-------------------------------------------------------------------------------------------------------------------
+int function2(int * ptr)
+-------------------------------------------------------------------------------------------------------------------
+
+We use the 1st form if the function needs a value for some calculation or action. Use the 2nd form if the function needs to alter variables in the calling function.
+
+(5)Pointers enable you to get around the fact that the variables of interchange() are local. They let the function reach out into main() and alter what is stored there.
