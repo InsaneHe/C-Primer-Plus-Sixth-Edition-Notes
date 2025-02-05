@@ -1,0 +1,157 @@
+Chapter 10 Arrays and Pointers
+一、Arrays
+1.Initialization
+(1)Array == composed of a series of  elements of one data type.
+[1]Array declaration == tells the compiler HOW MANY ELEMENTS the array contains and WHAT THE TYPE is for these elements.
+
+[2]The brackets ([]) identify the arrays, and the number enclosed in the brackets indicates the number of elements in the array.
+
+[3]To access elements in an array, you identify an individual element by using its subscript number (its index), which starts with 0.
+
+[4]Single-valued variable == scalar variable.
+
+[5]We initialize an array by using a comma-separated list of values enclosed in braces. We can use spaces between the values and the commas, if we want.
+
+(2)Take a look at the day_mon1.c program:
+[1]It is wrong only one month in every 4 years.
+
+[2]This program used the symbolic constant MONTHS to represent the array size, which is common and recommended. If the world switched to a 13-month calendar, we just have to modify the #define statement and do not have to track down every place in the program that uses the array size.
+
+[3]Read-only array == the program will retrieve values from the array, but it will not try to write new values into the array.
+{1}We can use the const keyword when we declare and initialize the array.
+
+{2}This way, it makes the program treat each element in the array as a constant.
+
+(3)Take a look at the no_data.c program:
+[1]The array members are like ordinary variables: if you do not initialize them, they might have any value. The compiler is allowed to just use whatever values were already present at those memory locations.
+
+[2]The number of items in the list should match the size of the array.
+
+(4)Take a look at the somedata.c program:
+[1]When it ran out of values from the list, it initialized the remaining elements to 0. If you do not initialize an array at all, its elements, like uninitialized ordinary variables, get garbage values, but if you partially initialize an array, the remaining elements are set to 0.
+
+[2]We can let the compiler match the array size to the list by omitting the size from the braces.
+
+(5)Take a look at the day_mon2.c program:
+[1]When you use empty brackets to initialize an array, the compiler counts the number of items in the list and makes the array that large. That is automatic counting.
+
+[2]The sizeof operator gives the size, in bytes, of the object, or type, following it. Dividing the size of the entire array by the size of one element tells us how many elements are in the array.
+
+[3]A potential disadvantage of automatic counting is that errors in the number of elements could pass unnoticed.
+
+2.Designated Initializers (C99)
+(1)C99 added a new capability: designated initializers == allows you to pick and choose which elements are initialized.
+
+(2)With C99, we can use an index in brackets in the initialization list to specify a particular element.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int arr[6] = {[5] = 212};  // initialize arr[5] to 212
+-------------------------------------------------------------------------------------------------------------------
+
+(3)As with regular initialization, after you initialize at least one element, the uninitialized elements are set to 0.
+
+(4)Take a look at the designate.c program:
+[1]If the code follows a designated initializer with further values, as in the sequence [4] = 31, 30, 31, these further values are used to initialize the subsequent elements.
+
+[2]If the code initializes a particular element to a value more than once, the last initialization is the one that takes effect.
+For example:
+In the designate.c program, the start of the initialization list initializes days[1] to 28, but that is overridden by the [1] = 29 designated initialization later.
+
+[3]?What if we do not specify the array size?
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int stuff[] = {1, [6] = 23};  // what happens?
+int staff[] = {1, [6] = 4, 9, 10};  // what happens?
+-------------------------------------------------------------------------------------------------------------------
+
+The compiler will make the array big enough to accomodate the initialization values. So stuff will have 7 elements, numbered 0-6, and staff will have 2 more elements, or 9.
+
+3.Assigning Array Values
+(1)After an array has been declared, you can assign values to array members by using an array index, or subscript.
+
+(2)C does not let you assign 1 array to another as a unit. Nor can you use the list-in-braces form except when initializing.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+/* nonvalid array assignment */
+#define SIZE 5
+int main(void)
+{
+	int oxen[SIZE] = {5, 3, 2, 8};  /* ok here */
+	int yaks[SIZE];
+
+	yaks = oxen;  /* not allowed */
+	yaks[SIZE] = oxen[SIZE];  /* out of range */
+	yaks[SIZE] = {5, 3, 2, 8};  /* does not work */
+}
+-------------------------------------------------------------------------------------------------------------------
+
+4.Array Bounds
+(1)We have to make sure we use array indices that are within bounds. That is, we have to make sure they have values valid for the array.
+
+(2)Take a look at the bounds.c program:
+[1]The compiler does not check to see whether the indices are valid. The result of using a bad index is, in the language of the C standard, undefined.
+
+[2]When we run the program, it might seem to work, it might work oddly, or it might abort.
+
+(3)Not checking bounds allows a C program to run faster.
+
+(4)To be totally safe, the compiler would have to add extra code to check the value of each index during runtime, and that would slow things down.
+
+5.Specifying an Array Size
+(1)Until the C99 standard, the answer has been that you have to use a constant integer expression between the brackets when declaring an array.
+
+(2)Constant integer expression == one formed from integer constants.
+For example: a sizeof expression is considered an integer constant, but a const value IS NOT. And the value of the expression must be greater than 0.
+
+These cases cannot be a constant integer expression:
+-------------------------------------------------------------------------------------------------------------------
+float a4[-4];  // no, size must be > 0
+float a6[2.5];  // no, size must be an integer
+float a8[n];  // not allowed before C99
+-------------------------------------------------------------------------------------------------------------------
+
+The last declaration create a new breed of array called variable-length array, or VLA for short.
+
+(3)VLA == allow C to become a better language for numerical computing and make it easier to convert existing libraries of FORTRAN numerical calculation routines to C. It has some restrictions: for example, we cannot initialize a VLA in its declaration.
+
+二、Multidimensional Arrays
+1.Initializing a Two-Dimensional Array
+(1)We can declare array of arrays like this:
+-------------------------------------------------------------------------------------------------------------------
+float rain[5][12];  // array of 5 arrays of 12 floats
+-------------------------------------------------------------------------------------------------------------------
+
+[1]One way to look at this declaration is to first look at the inner portion: rain[5] means rain is an array with 5 elements. And then look at the remaining part of the declaration which is [12], that means each element is of type float[12], which means that each of the 5 elements of rain is, in itself, an array of 12 float values. That means rain[0] is the 1st element of rain which is an array of 12 floats, and rain[0][0] is a float.
+
+(2)Take a look at the rain.c program:
+
+
+2.More Dimensions
+
+三、Pointers and Arrays
+
+
+四、Functions, Arrays, and Pointers
+1.Using Pointer Parameters
+
+2.Comment: Pointers and Arrays
+
+
+五、Pointer Operations
+
+
+六、Protecting Array Contents
+1.Using const with Formal Parameters
+
+2.More About const
+
+七、Pointers and Multidimensional Arrays
+1.Pointers to Multidimensional Arrays
+
+2.Pointer Compatibility
+
+3.Functions and Multidimensional Arrays
+
+八、Variable-Length Arrays (VLAs)
+
+九、Compound Literals
