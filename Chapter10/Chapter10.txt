@@ -124,15 +124,86 @@ float rain[5][12];  // array of 5 arrays of 12 floats
 [1]One way to look at this declaration is to first look at the inner portion: rain[5] means rain is an array with 5 elements. And then look at the remaining part of the declaration which is [12], that means each element is of type float[12], which means that each of the 5 elements of rain is, in itself, an array of 12 float values. That means rain[0] is the 1st element of rain which is an array of 12 floats, and rain[0][0] is a float.
 
 (2)Take a look at the rain.c program:
+[1]The computation scheme
+{1}A nested loop structure like this one is natual for handling a 2-dimensional array. One loop handles the 1st subscript, and the other loop handles the 2nd subscript.
 
+{2}Each time the outer loop cycles once, the inner loop cycles its full allotment.
+
+[2]The initialization
+{1}Its initialization uses 5 embraced lists of numbers, all enclosed by 1 outer set of braces. The data in the 1st interior set of braces is assigned to the 1st row of the array, the data in the 2nd interior set goes to the 2nd row, and so on.
+
+{2}Mismatches between data and array sizes
+If the 1st inner set of braces encloses 10 numbers, only the first 10 elements of the 1st row are affected. The last 2 elements in that row are then initialized by default to 0. If there are too many numbers enclosed in that inner set of braces, then it is an error, the numbers do not get shoved into the next row.
+
+{3}We could omit the interior braces and just retain the 2 outermost braces. As long as we have the right number of entries, the effect is the same. If we are short of entries, however, the array is filled sequentially, row by row, until the data runs out. Then the remaining elements are initialized to 0.
+
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int sq[2][3] = {{5, 6}, {7, 8}};
+-------------------------------------------------------------------------------------------------------------------
+
+The result will be: {{5, 6, 0}, {7, 8, 0}}.
+
+-------------------------------------------------------------------------------------------------------------------
+int sq[2][3] = {5, 6, 7, 8};
+-------------------------------------------------------------------------------------------------------------------
+
+The result will be: {{5, 6, 7}, {8, 0, 0}}.
 
 2.More Dimensions
+(1)Everything we have said about 2-dimensional arrays can be generalized to 3-dimensional arrays and further.
+
+(2)We can visualize a 3-dimensional array as a stack of data tables. The other way to think of it is as an array of arrays of arrays.
+
+(3)Typically, we would use 3 nested loops to process a 3-dimensional array, 4 nested loops to process a 4-dimensional array, and so on.
 
 三、Pointers and Arrays
+1.Array notation is simply a disguised use of pointers.
+(1)An array name is also the address of the 1st element of the array.
 
+For example:
+If flizny is an array, the following is true:
+-------------------------------------------------------------------------------------------------------------------
+flizny == &flizny[0];  // name of array is the address of the 1st element
+-------------------------------------------------------------------------------------------------------------------
+
+(2)flizny and &flizny[0] are BOTH constants because they remain fixed for the duration of the program. But they can be assigned as values to a pointer variable, and we can change the value of a variable.
+
+2.Take a look at the pnt_add.c program:
+(1)We can see that the 2nd line prints the beginning addresses of the 2 arrays, and the next line gives the result of adding 1 to the address, and so on. But the result is not what we imagined because in the result, the number of the address are not separated by 1 but other numbers.
+
+(2)Our system is addressed by individual bytes, but type short uses 2 bytes and type double uses 8 bytes. When we say "add 1 to a pointer", C adds 1 storage unit. For arrays, that means the address is increased to the address of the next element, not just the next byte.
+
+(3)The reason why we have to declare the sort of object to which a pointer points: the address is not enough because the computer needs to know how many bytes are used to store the object. (This is true even for pointers to scalar variables; otherwise, the *pt operation to fetch the value would not work correctly.)
+
+3.What is meant by pointer-to-int, pointer-to-float or pointer-to-any other data object:
+(1)The value of a pointer is the address of the object to which it points. How the address is represented internally is hardware dependent.
+[1]byte addressable == each byte in memory is numbered sequentially.
+
+[2]The address of a large object, such as type double variable, typically is the address of the 1st byte of the object.
+
+(2)Applying the * operator to a pointer yields the value stored in the pointed-to object.
+
+(3)Adding 1 to the pointer increases its value by the size, in bytes, of the pointed-to type.
+
+4.We have the following equalities:
+-------------------------------------------------------------------------------------------------------------------
+dates + 2 == &date[2]  // same address
+*(dates + 2) == dates[2]  // same value
+-------------------------------------------------------------------------------------------------------------------
+
+5.The C language standard describes array notation in terms of pointers, which means that it defines ar[n] to mean *(ar + n).
+
+6.The indirection operator (*) binds more tightly (that is, has higher precedence) than +.
+
+7.Take a look at the day_mon3.c program:
+(1)days is the address of the 1st element of the array, days + index is the address of element days[index], and *(days + index) is the value of that element, just as days[index] is.
+
+(2)Is there an advantage to writing the program this way? Not really. The compiler produces the SAME code for either.
 
 四、Functions, Arrays, and Pointers
 1.Using Pointer Parameters
+
 
 2.Comment: Pointers and Arrays
 
