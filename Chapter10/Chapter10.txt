@@ -203,26 +203,279 @@ dates + 2 == &date[2]  // same address
 
 四、Functions, Arrays, and Pointers
 1.Using Pointer Parameters
+(1)Suppose you want to write a function that operates on an array, what would the prototype be?
+As the name of an array is the address of its 1st element, so the actual argument of it, being the address of an int, should be assigned to a formal parameter that is a pointer-to-int:
+-------------------------------------------------------------------------------------------------------------------
+int sum(int * ar);  // corresponding prototype
+-------------------------------------------------------------------------------------------------------------------
 
+[1]The information that sum() gets from this argument is the address of the 1st element of the array and it says nothing about the number of elements in the array.
+
+[2]We have a couple of choices of how to get that information to the function.
+{1}The 1st choice is to code a fixed array size into the function.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int sum(int * ar)  // corresponding definition
+{
+	int i;
+	int total = 0;
+
+	for (i = 0; i < 10; i++)  // assume 10 elements
+		total += ar[i];  // ar[i] the same as *(ar + i)
+	return total;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+{2}A more flexible approach is to pass the array size as a 2nd argument.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int sum(int * ar, int n)  // more general approach
+{
+	int i;
+	int total = 0;
+
+	for (i = 0; i < n; i++)  // use n elements
+		total += ar[i];  // ar[i] the same as *(ar + i)
+	return total;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+Here, the 1st parameter tells the function where to find the array and the type of data in the array, and the 2nd parameter tells the function how many elements are present.
+
+[3]In the context of a function prototype or function definition header, and only in that context, you can substitute int ar[] for int * ar.
+
+(2)Declaring Array Parameters
+[1]Prototypes allow we to omit a name, all 4 of the following prototypes are equivalent:
+{1}int sum(int *ar, int n);
+
+{2}int sum(int *, int);
+
+{3}int sum(int ar[], int n);
+
+{4}int sum(int [], int);
+
+[2]We cannot omit names in function definitions, so, for definitions, the following 2 forms are equivalent:
+-------------------------------------------------------------------------------------------------------------------
+int sum(int * ar, int n)
+{
+	// code goes here
+}
+-------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------
+int sum(int ar[], int n);
+{
+	// code goes here
+}
+-------------------------------------------------------------------------------------------------------------------
+
+(3)Take a look at the sum_arr1.c program:
+[1]Note that the size of marbles is 40 bytes because marbles contains 10 ints, each 4 bytes, for a total of 40 bytes.
+
+[2]The size of ar is just 8 bytes because ar is not an array itself, it is a pointer to the 1st element of marbles. (Other systems might use a different number of bytes.) Marbles is an array, ar is a pointer to the 1st element of marbles, and the C connection between arrays and pointers lets you use array notation with the pointer ar.
+
+(4)A function working on an array needs to know where to start and stop.
+
+(5)Another way to describe the array is by passing 2 pointers, with the 1st indicating where the array starts (as before) and the 2nd where the array ends.
+
+(6)The function can alter the value of the pointer itself, making it point to each array element in turn.
+
+(7)Take a look at the sum_arr2.c program:
+[1]The pointer start begins by pointing to the 1st element of marbles, so the assignment expression total +=*start adds the value of the 1st element (20) to total. Then the expression start++ increments the pointer variable start so that it points to the next element in the array. Because start points to type int, C increments the value of start by the size of int.
+
+[2]The pointer variable end actually points to the location after the final element in the array. When C allocates space for an array, a pointer to the 1st location after the last element of the array is a valid pointer.
+
+[3]Although C guarantees that the pointer marbles + SIZE is a valid pointer, it makes no guarantees about marbles[SIZE], the value stored at that location, so a program should not attempt to access that location.
+
+[4]We can also condense the body of the loop to 1 line:
+-------------------------------------------------------------------------------------------------------------------
+total += *start++;
+-------------------------------------------------------------------------------------------------------------------
+
+The unary operators * and ++ have the same precedence but associate from right to left. This means the ++ applies to start, not to *start. That is, the pointer is incremented, not the value pointed to.
+
+[5]Different situations
+{1}If the program used *++start, the order would be increment the pointer, then use the value pointed to.
+
+{2}If the program used (*start)++, however, it would use the value of start and then increment the value, not the pointer. That would leave the pointer pointing to the same element, but the element would contain a new number.
 
 2.Comment: Pointers and Arrays
+(1)Using array notation makes it more obvious that the function is working with arrays. Also, array notation has a more familiar look to programmers versed in other languages. Other programmers might be more accustomed to working with pointers and might find the pointer notation more natural.
 
+(2)As far as C goes, the 2 expressions ar[i] and *(ar+i) are equivalent in meaning. Both work if ar is the name of an array, and both work if ar is a pointer variable. However, using an expression such as ar++ only works if ar is a POINTER variable.
+
+(3)Pointer notation, particularly when used with the increment operator, is closer to machine language and, with some compilers, leads to more efficient code.
 
 五、Pointer Operations
+1.Take a look at the ptr_ops.c program:
+(1)The basic operations that can be performed with or on pointer variables:
+[1]Assignment == assign an address to a pointer.
+{1}Note that the address should be compatible with the pointer type. That is, we cannot assign the address of a double to a pointer-to-int, at least not without making an ill-advised type cast.
 
+[2]Value finding (dereferencing) == use the * operator to give the value stored in the point-to location.
+
+[3]Taking a pointer address.
+{1}Like all variables, a pointer variable has an address and a value. The & operator tells you where the pointer itself is stored.
+
+[4]Adding an integer to a pointer == we can use the + operator to add an integer to a pointer or a pointer to an integer. In either case, the integer is multiplied by the number of bytes in the pointed-to type, and the result is added to the original address.
+
+[5]Incrementing a pointer == makes it move to the next element of the array.
+{1}Note that the address of ptr1 itself remains the original one. After all, a variable does not move around just because it changes value.
+
+[6]Subtracting an integer from a pointer
+{1}The pointer has to be the 1st operand and the integer value the 2nd operand. The integer is multiplied by the number of bytes in the pointed-to type, and the result is subtracted from the original address.
+
+{2}The result of subtraction is undefined if it lies outside of the array into which the original pointer points, except that the address one past the end element of the array is guaranteed to be valid.
+
+[7]Decrementing a pointer
+{1}We can use both the prefix and postfix forms of the increment and decrement operators.
+
+[8]Differencing
+{1}We find the difference between 2 pointers to elements that are in the same array to find out how far apart the elements are. The result is in the same units as the type size.
+
+[9]Comparisons
+{1}We can use the relational operators to compare the values of 2 pointers, provided the pointers are of the same type.
+
+(2)There are 2 forms of subtraction. We can subtract 1 pointer from another to get an integer, and we can subtract an integer from a pointer and get a pointer.
+
+(3)The computer does not keep track of whether a pointer still points to an array element. But the effect of incrementing or decrementing a pointer beyond these limits is undefined. Also, we can dereference a pointer to any array element. However, even though a pointer to 1 past the end element is valid, it is not guaranteed that such a one-past-the-end pointer can be dereferenced.
+
+(4)Dereferencing an Uninitialized Pointer
+[1]Do not dereference an uninitialized pointer.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int * pt;  // an uninitialized pointer
+*pt = 5;  // a terrible error
+-------------------------------------------------------------------------------------------------------------------
+
+pt is uninitialized, and it has a random value, so there is no knowing where the 5 will be placed. Creating a pointer only allocates memory to store the pointer itself, it does not allocate memory to store data.
 
 六、Protecting Array Contents
 1.Using const with Formal Parameters
+(1)The usual rule == pass quantities by value unless the program needs to alter the value, in which case we pass a pointer.
+
+(2)For arrays, we MUST pass a pointer. If a function passed an array by value, it would have to allocate enough space to hold a copy of the original array and then copy all the data from the original array to the new array. It is much quicker to pass the address of the array and have the function work with the original data.
+
+(3)The reason C ordinarily passes data by value is to preserve the integrity of the data. If a function works with a copy of the original data, it will not accidentally modify the original data. But, because array-processing functions do work with the original data, they CAN modify the array.
+
+(4)If a function's intent is that it not change the contents of the array, use the keyword const when declaring the formal parameter in the prototype and in the function definition.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int sum(const int ar[], int n);  /* prototype */
+
+int sum(const int ar[], int n)  /* definition */
+{
+	int i;
+	int total = 0;
+
+	for (i = 0; i < n; i++)
+		total += ar[i];
+	return total;
+}
+-------------------------------------------------------------------------------------------------------------------
+
+If we accidentally use an expression such as ar[i]++, the compiler can catch it and generate an error message, telling you that the function is attempting to alter constant data.
+
+(5)Using const this way does NOT require that the original array be constant, it just says that the function has to treat the array AS THOUGH it were constant.
+
+(6)In general, if we write a function intended to modify an array, do not use const when declaring the array parameter. If we write a function not intended to modify an array, do use const when declaring the array parameter.
+
+(7)Take a look at the arf.c program:
+[1]Here, show_array function displays an array and mult_array function multiplies each element of an array by a given value. As the 1st function should not alter the array, it uses const, and as the 2nd function intends to modify the array, it does not use const.
+
+[2]Note that both functions are type void. The mult_array() function does provide new values to the dip array, but not by using the return statement.
 
 2.More About const
+(1)const can be used to create symbolic constants, which can be accomplished by #define directive. But const additionally lets us create cosntant arrays, constant pointers, and pointers to constants.
+
+(2)Pointers to constants cannot be used to change values
+For example:
+-------------------------------------------------------------------------------------------------------------------
+double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double * pd = rates;  // pd points to beginning of the array
+-------------------------------------------------------------------------------------------------------------------
+
+[1]The 2nd line of code declares that the type double value to which pd points is a const, which means that we cannot use pd to change pointed-to values:
+-------------------------------------------------------------------------------------------------------------------
+*pd = 29.89;  // not allowed
+pd[2] = 222.22;  // not allowed
+rates[0] = 99.99;  // allowed because rates is not const
+-------------------------------------------------------------------------------------------------------------------
+
+[2]Whether we use pointer notation or array notation, we are NOT allowed to use pd to change the value of pointed-to data. However, because rates was NOT declared as a constant, we can still use rates to change values.
+
+[3]And we can make pd point somewhere else.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+pd++;  /* make pd point to rates[1] -- allowed */
+-------------------------------------------------------------------------------------------------------------------
+
+[4]A pointer-to-constant is normally used as a function parameter to indicate that the function will NOT use the pointer to change data.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+void show_array(const double *ar, int n);
+-------------------------------------------------------------------------------------------------------------------
+
+[5]Rules about pointer assignments and const
+{1}First, it is valid to assign the address of either constant data or non-constant data to a pointer-to-constant.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double locked[4] = {0.08, 0.075, 0.0725, 0.07};
+const double * pc = rates;  // valid
+pc = locked;  // valid
+pc = &rates[3];  // valid
+-------------------------------------------------------------------------------------------------------------------
+
+{2}Only the addresses of non-constant data can be assigned to regular pointers.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double locked[4] = {0.08, 0.075, 0.0725, 0.07};
+double * pc = rates;  // valid
+pnc = locked;  // NOT valid
+pnc = &rates[3];  // valid
+-------------------------------------------------------------------------------------------------------------------
+
+After all, we could use the pointer to change data that was supposed to be constant.
+
+{3}Using const in a function parameter definition not only protects data, it also allows the function to work with arrays that have been declared const.
+
+{4}An attempt to modify const data, such as locked, using a non-const identifier, results in undefined behavior.
+
+[6]More possible uses of const
+{1}We can declare and initialize a pointer so that it cannot be made to point elsewhere. The trick is the placement of the keyword const.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+double * const pc = rates;  // pc points to beginning of the array
+pc = &rates[2];  // not allowed to point elsewhere
+*pc = 92.99;  // ok -- changes rates[0]
+-------------------------------------------------------------------------------------------------------------------
+
+Such a pointer can still be used to change values, but it can point only to the location originally assigned to it.
+
+{2}Use const twice to create a pointer that can neither change where it is pointing nor change the value to which it points.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+double rates[5] = {88.99, 100.12, 59.45, 183.11, 340.5};
+const double * const pc = rates;
+pc = &rates[2];  // not allowed
+*pc = 92.99;  // not allowed
+-------------------------------------------------------------------------------------------------------------------
 
 七、Pointers and Multidimensional Arrays
 1.Pointers to Multidimensional Arrays
 
+
 2.Pointer Compatibility
+
 
 3.Functions and Multidimensional Arrays
 
+
 八、Variable-Length Arrays (VLAs)
 
+
 九、Compound Literals
+
