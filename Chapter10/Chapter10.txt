@@ -466,10 +466,124 @@ pc = &rates[2];  // not allowed
 
 七、Pointers and Multidimensional Arrays
 1.Pointers to Multidimensional Arrays
+(1)Suppose we have this declaration:
+-------------------------------------------------------------------------------------------------------------------
+int zippo[4][2];  /* an array of arrays of ints */
+-------------------------------------------------------------------------------------------------------------------
 
+[1]zippo[0] is itself an array of 2 ints, so zippo[0] has the same value as &zippo[0][0], the address of its 1st element, an int. In short, zippo[0] is the address of an int-sized object, and zippo is the address of a 2-int-sized object.
+
+[2]zippo and zippo[0] differ, because zippo refers to an object 2 ints in size, and zippo[0] refers to an object 1 int in size.
+
+[3]*zippo represents the value of its 1st element, zippo[0], but zippo[0] itself is the address of an int. It is the address &zippo[0][0], so *zippo is &zippo[0][0]. **zippo equals *&zippo[0][0], which reduces to zippo[0][0], an int. In short, zippo is the address of an address and must be dereferenced twice to get an ordinary value. An address of an address or a pointer of a pointer is an example of double indirection.
+
+(2)Take a look at the zippo1.c program:
+[1]The address of the 2-dimensional array, zippo, and the address of the 1-dimensional array, zippo[0], are the same. Each is the address of the corresponding array's 1st element, and this is the same numerically as &zippo[0][0].
+
+[2]The name of a 2-dimensional array has to be dereferenced twice to get a value stored in the array. This can be done by using the indirection operator (*) twice or by using the bracket operator ([]) twice. (It also can be done by using 1 * and 1 set of [].)
+
+(3)How to declare a pointer variable pz that can point to a 2-dimensional array such as zippo?
+[1]The type pointer-to-int does not suffice, it is compatible with zippo[0], which points to a single int. Actually, pz must point to an array of 2 ints, not to a single int.
+
+[2]We can do this:
+-------------------------------------------------------------------------------------------------------------------
+int (* pz)[2];  // pz points to an array of 2 ints
+-------------------------------------------------------------------------------------------------------------------
+
+This statement says that pz is a pointer to an array of 2 ints. Why use parentheses? [] has a higher precedence than *.
+
+[3]A declaration such as:
+-------------------------------------------------------------------------------------------------------------------
+int * pax[2];  // pax is an array of 2 points-to-int
+-------------------------------------------------------------------------------------------------------------------
+
+We apply the brakcets first, making pax an array of 2 somethings. Next, we apply the *, making pax an array of 2 pointers. Finally, use the int, making pax an array of 2 pointers to int. This declaration creates 2 pointers to single ints while the original version uses parentheses to apply the * first, creating 1 pointer to an array of 2 ints.
+
+(4)Take a look at the zippo2.c program:
+We can represent individual elements by using array notation or pointer notation with either an array name or a pointer:
+zippo[m][n] == *(*(zippo + m) + n)
+pz[m][n] == *(*(pz + m) + n)
 
 2.Pointer Compatibility
+(1)The rules for assigning 1 pointer to another are tighter than the rules for numeric types.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int n = 5;
+double x;
+int * p1 = &n;
+double * pd = &x;
+x = n;  // implicit type conversion
+pd = p1;  // compile-time error
+-------------------------------------------------------------------------------------------------------------------
 
+(2)Restrictions mentioned above extend to more complex types.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int * pt;
+int (*pt)[3];
+int ar1[2][3];
+int ar2[3][2];
+int **p2;  // a pointer to a pointer
+-------------------------------------------------------------------------------------------------------------------
+
+Then we have the following:
+-------------------------------------------------------------------------------------------------------------------
+pt = &ar1[0][0];  // both pointer-to-int
+pt = ar1[0];  // both pointer-to-int
+pt = ar1;  // not valid
+pa = ar1;  // both pointer-to-int[3]
+pa = ar2;  // not valid
+p2 = &pt;  // both pointer-to-int *
+*p2 = ar2[0];  // both pointer-to-int
+p2 = ar2;  // not valid
+-------------------------------------------------------------------------------------------------------------------
+
+The nonvalid assignments all involve 2 pointers that do not point to the same type. For instance, the type of pa is a pointer that points to an array with 3 int while the first element of ar2 is an array with 2 int, so the address type of ar2 is a pointer that points to an array with 2 int.
+
+(3)Multiple indirection is tricky.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+int x = 20;
+const int y = 23;
+int * p1 = &x;
+const int * p2 = &y;
+const int ** pp2;
+p1 = p2;  // not safe -- assigning const to non-const
+p2 = p1;  // valid -- assigning non-const to const
+pp2 = &p1;  // not safe -- assigning nested pointer types
+-------------------------------------------------------------------------------------------------------------------
+
+Although assigning a const pointer to a non-const pointer is not safe (because you could use the new pointer to alter const data), the code would compile, perhaps with a warning, the effect of executing the code is undefined. But assigning a non-const pointer to a const pointer is okay, as you are dealing with just 1 level of indirection.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+p2 = p1;  // valid
+-------------------------------------------------------------------------------------------------------------------
+
+But such assignments no longer safe when you go to 2 levels of indirection.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+const int **pp2;
+int *p1;
+const int n = 13;
+pp2 = &p1;  // allowed, but const qualifier disregarded
+*pp2 = &n;  // valid, both const, but sets p1 to point at n
+*p1 = 10;  // valid, but tries to change const n
+-------------------------------------------------------------------------------------------------------------------
+
+(4)C const and C++ const
+[1]C and C++ use const similarly but not identically.
+{1}C++ allows using a const integer value to declare an array size and C is more restrictive.
+
+{2}C++ has stricter rules about pointer assignments.
+For example:
+-------------------------------------------------------------------------------------------------------------------
+cosnt int y;
+const int * p2 = &y;
+int * p1;
+p1 = p2;  // error in C++, possible warning in C
+-------------------------------------------------------------------------------------------------------------------
+
+In C++ we are not allowed to assign a const pointer to a non-const pointer. In C, you can make this assignment, but the behavior is undefined if we try to use p1 to alter y.
 
 3.Functions and Multidimensional Arrays
 
